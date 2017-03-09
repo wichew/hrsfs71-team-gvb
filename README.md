@@ -12,7 +12,7 @@ Players are either Good or Bad. For three to five rounds, they must depend on ea
 
   - __Product Owner__:Linsay Anchors
   - __Scrum Master__: Aidan Bane
-  - __Development Team Members__: Wilton Chew, Derek A
+  - __Development Team Members__: Wilton Chew, Derek Alia
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ Players are either Good or Bad. For three to five rounds, they must depend on ea
 
 ## Usage
 
-> Some usage instructions
+> Testing Git pull requests. 
 
 ## Requirements
 
