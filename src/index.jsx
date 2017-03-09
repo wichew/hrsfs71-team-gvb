@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Signup from './components/Signup';
+import Signup from './components/Signup.jsx';
 
 class Index extends React.Component {
   constructor(props) {
@@ -10,7 +10,6 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-       <p> This is working</p>
        <Signup />
       </div>
     );
