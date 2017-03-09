@@ -4,7 +4,8 @@
   "description": "Good must triumph. The missions must succeed. By completing missions, Good will become one step closer to success yet Bad has cursed some of the good, ready for sabotage. Good must unmask them in five missions. We are Good!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,17 @@
   "bugs": {
     "url": "https://github.com/derekalia/hrsfs71-team-gvb/issues"
   },
-  "homepage": "https://github.com/derekalia/hrsfs71-team-gvb#readme"
+  "homepage": "https://github.com/derekalia/hrsfs71-team-gvb#readme",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-preset-latest": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "webpack": "^2.2.1"
+  }
 }
