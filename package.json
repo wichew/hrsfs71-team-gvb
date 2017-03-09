@@ -1,0 +1,19 @@
+{
+  "name": "gvb",
+  "version": "1.0.0",
+  "description": "Good must triumph. The missions must succeed. By completing missions, Good will become one step closer to success yet Bad has cursed some of the good, ready for sabotage. Good must unmask them in five missions. We are Good!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derekalia/hrsfs71-team-gvb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/derekalia/hrsfs71-team-gvb/issues"
+  },
+  "homepage": "https://github.com/derekalia/hrsfs71-team-gvb#readme"
+}
