@@ -26,7 +26,7 @@ Players are either Good or Bad. For three to five rounds, they must depend on ea
 
 ## Usage
 
-> Some usage instructions
+> Testing Git pull requests. 
 
 ## Requirements
 
