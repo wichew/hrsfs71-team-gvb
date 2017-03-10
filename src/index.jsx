@@ -9,14 +9,16 @@ class Index extends React.Component {
     super(props);
     this.state = {
       isGoing: false,
+      resultsArray: [{userID: 'jscha', vote: false, key: '2387dakjh'}]
     };
-    socket.on('testCheck', ()=>{ console.log('we are over here'); this.handleCheck(); });
+    socket.on('testCheck', (userArray) => { this.setState({ resultsArray: userArray }); console.log('we are over here', userArray); this.handleCheck(); });
   }
 
-  handleCheck() {      
-    console.log('hi', this.state.isGoing);
+  handleCheck(userID) {
+    console.log('userID', userID);    
     this.setState({
       isGoing: !this.state.isGoing
+
     });
   }
 
@@ -25,10 +27,14 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-       <Signup />
+        <Signup />
         <p> This is working</p>
-        <button onClick={() => { socket.emit('channel-name', 'Hello world!'); }}>Emit Me</button>
-        <input type='checkbox' checked={this.state.isGoing} onChange={() => { console.log(this.state.isGoing); socket.emit('checked'); this.handleCheck(); }}></input>
+        <button onClick={() => { console.log(this.state); socket.emit('channel-name', 'Hello world!'); }}>Emit Me</button> 
+         {/*{this.state.resultsArray}      */}
+        {this.state.resultsArray.map((userInput) => {
+          return <input type='checkbox' checked={userInput.vote} onChange={() => { socket.emit('checked'); this.handleCheck(this); }} />;
+        }
+        )}         
       </div>
     );
   }

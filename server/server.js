@@ -18,8 +18,11 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/bundle', express.static(path.join(__dirname, '../bundle')));
 
+var userArray = [];
+
 io.on('connection', (socket) => {
   console.log('a user connected');
+  userArray.push({ userID: socket.client.id, vote: false, key: socket.client.id });
   socket.on('channel-name', (message) => console.log('we got the message', message));
   socket.on('checked', () => { 
     console.log('we got here'); 
@@ -27,11 +30,18 @@ io.on('connection', (socket) => {
       if (err) { throw err; }
       console.log(clients);
     });
-    socket.broadcast.emit('testCheck', {for: 'everyone'});        
+    console.log(userArray);
+    socket.broadcast.emit('testCheck', userArray);        
   });
   
 
   socket.on('disconnect', () => {
+    for (var i = 0; i < userArray.length; i++) {
+      if (userArray[i].userID === socket.client.id) {
+        userArray.splice(i, 1);
+        break;        
+      }
+    }
     console.log('user disconnected');
   });
 
