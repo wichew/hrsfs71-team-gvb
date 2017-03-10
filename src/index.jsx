@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, Route, browserHistory} from 'react-router';
+import {App} from './components/App.jsx';
 
 class Index extends React.Component {
   constructor(props) {
@@ -9,9 +11,9 @@ class Index extends React.Component {
 
   render() {
     return (
-      <div>
-       <p> This is working</p>
-      </div>
+      <Router history={browserHistory}>
+        <Route path={'app'} component = {App}/>
+      </Router>
     );
   }
 }
