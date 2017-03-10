@@ -23,7 +23,21 @@ var userArray = [];
 io.on('connection', (socket) => {
   console.log('a user connected');
   userArray.push({ userID: socket.client.id, vote: false, key: socket.client.id });
+  
+  //send all to users
+  socket.broadcast.emit('playerJoined', userArray);
+  
+  socket.emit('playerJoined', userArray);
+  
   socket.on('channel-name', (message) => console.log('we got the message', message));
+ 
+  socket.on('updateCheckArray', (array)=>{
+    
+    console.log('updateCheckArray', array);
+    userArray = array;
+    socket.broadcast.emit('upDateChecks', array);
+  });
+
   socket.on('checked', () => { 
     console.log('we got here'); 
     io.clients(function(err, clients) {
@@ -31,7 +45,8 @@ io.on('connection', (socket) => {
       console.log(clients);
     });
     console.log(userArray);
-    socket.broadcast.emit('testCheck', userArray);        
+    socket.broadcast.emit('testCheck', userArray);
+    // socket.emit('testCheck', userArray);
   });
   
 
@@ -42,6 +57,7 @@ io.on('connection', (socket) => {
         break;        
       }
     }
+    socket.broadcast.emit('upDateChecks', userArray);
     console.log('user disconnected');
   });
 

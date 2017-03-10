@@ -7,7 +7,13 @@ class InputItem extends React.Component {
 
   render() {
     return (
-      <input type='checkbox' checked={userInput.vote} onChange={() => { socket.emit('checked'); this.handleCheck(this); }} />
+      <div>
+        {/*{console.log('props in inputItem ', this.props)}*/}
+        <input
+          type='checkbox'
+          checked={this.props.vote}
+          onChange={() => { this.props.handleCheck(this.props.userID); }} />
+      </div>
     );
   }
 
