@@ -26,30 +26,27 @@ io.on('connection', (socket) => {
   
   //send all to users
   socket.broadcast.emit('playerJoined', userArray);
-  
   socket.emit('playerJoined', userArray);
   
   socket.on('channel-name', (message) => console.log('we got the message', message));
  
   socket.on('updateCheckArray', (array)=>{
-    
     console.log('updateCheckArray', array);
     userArray = array;
     socket.broadcast.emit('upDateChecks', array);
   });
 
-  socket.on('checked', () => { 
-    console.log('we got here'); 
-    io.clients(function(err, clients) {
-      if (err) { throw err; }
-      console.log(clients);
-    });
-    console.log(userArray);
-    socket.broadcast.emit('testCheck', userArray);
-    // socket.emit('testCheck', userArray);
-  });
+  // socket.on('checked', () => { 
+  //   console.log('we got here'); 
+  //   io.clients(function(err, clients) {
+  //     if (err) { throw err; }
+  //     console.log(clients);
+  //   });
+  //   console.log(userArray);
+  //   socket.broadcast.emit('testCheck', userArray);
+  //   // socket.emit('testCheck', userArray);
+  // });
   
-
   socket.on('disconnect', () => {
     for (var i = 0; i < userArray.length; i++) {
       if (userArray[i].userID === socket.client.id) {
@@ -62,6 +59,5 @@ io.on('connection', (socket) => {
   });
 
 });
-
 
 server.listen(PORT, () => (console.log('we are listening on port', PORT)) );

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Signup from './components/Signup.jsx';
 import SocketIOClient from 'socket.io-client';
 import InputItem from './components/InputItem.jsx';
+import ChatBox from './components/ChatBox/ChatBox.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
 
@@ -19,13 +19,6 @@ class Index extends React.Component {
     this.handleCheck = this.handleCheck.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     resultsArray: [{ userID: 'test', vote: false, key: 'testKey' }, { userID: 'derek', vote: false, key: 'derekKey' }]
-  //   });
-  // }
-
-
   handleCheck(userID) {
     console.log('handleCheck userID', userID);
     var otherArray = this.state.resultsArray.slice();
@@ -41,19 +34,15 @@ class Index extends React.Component {
     });
   }
 
-
-
   render() {
     return (
       <div>
-        <Signup />
-        <p> This is working</p>
         <button onClick={() => { console.log(this.state); socket.emit('channel-name', 'Hello world!'); }}>Emit Me</button>
-        {/*return <input type='checkbox' checked={userInput.vote} onChange={() => { socket.emit('checked'); this.handleCheck(this.key); }} />;*/}
         {this.state.resultsArray.map((userInput) => {
           return <InputItem vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} socket={socket} />;
         }
         )}
+        <ChatBox />
       </div>
     );
   }
