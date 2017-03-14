@@ -1,13 +1,15 @@
 import React from 'react';
+import Vote from './Vote.jsx';
+import Signup from './Signup.jsx';
 
 const App = () => {
-  render () {
-    return (
-      <div>
-        
-      </div>
-    );
-  }
+  return (
+    <div>
+      <p>Good-v-Bad: The Game</p>
+      <Signup />
+      <Vote />
+    </div>
+  );
 };
 
-export default App
+export default App;
