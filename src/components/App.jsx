@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { HashRouter as Router, Link, Route } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import Vote from './Vote.jsx';
 import Signup from './Signup.jsx';
 
 const App = () => {
   return (
-    <Router>
+    <Router basename='/play'>
       <div>
         <p>Good-v-Bad: The Game</p>
         <div>
