@@ -1,6 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var User = require('./schemas/users.js');
+
 mongoose.connect('mongodb://localhost/test');
 var db  = mongoose.connection;
 

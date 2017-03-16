@@ -4,9 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 const path = require('path');
-
-// connection to mongoDB
-var db = require('./db/index.js');
+const db = require('./db/index.js');
 
 var app = express();
 var server = require('http').createServer(app);
