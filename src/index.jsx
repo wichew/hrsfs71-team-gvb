@@ -11,21 +11,21 @@ class Index extends React.Component {
     super(props);
     this.state = {
       isGoing: false,
-      resultsArray: []
+      resultsArray: [],
+      playerID: '',
+      picker: ''
     };
-    socket.on('testCheck', (userArray) => { this.setState({ resultsArray: userArray }); console.log('we are over here', userArray); this.handleCheck(); });
-    socket.on('playerJoined', (array)=> { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });
-    socket.on('upDateChecks', (array)=> { console.log('upDateChecks ', array); this.setState({ resultsArray: array }); });
+    // socket.on('testCheck', (userArray) => { this.setState({ resultsArray: userArray }); console.log('we are over here', userArray); this.handleCheck(); });
+    socket.on('playerJoined', (array) => { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });    
+    socket.on('upDateChecks', (array) => { console.log('upDateChecks ', array); this.setState({ resultsArray: array }); });
+    socket.on('setPlayerID', (id) => { this.setState({playerID: id}); });
+    socket.on('setPicker', (picker) => { console.log(picker); this.setState({picker: picker}); });
+   
     this.handleCheck = this.handleCheck.bind(this);
+    this.roundVote = this.roundVote.bind(this);
+    this.isPicker = this.isPicker.bind(this);
   }
-
-  // componentDidMount() {
-  //   this.setState({
-  //     resultsArray: [{ userID: 'test', vote: false, key: 'testKey' }, { userID: 'derek', vote: false, key: 'derekKey' }]
-  //   });
-  // }
-
-
+  
   handleCheck(userID) {
     console.log('handleCheck userID', userID);
     var otherArray = this.state.resultsArray.slice();
@@ -34,24 +34,42 @@ class Index extends React.Component {
         otherArray[i].vote = !otherArray[i].vote;
       }
     });
-    console.log('size of array ', otherArray);
     socket.emit('updateCheckArray', otherArray);
     this.setState({
       resultsArray: otherArray
     });
   }
 
+  roundVote(voteObj) {
+    console.log('in the roundVote on client', voteObj.user + ' ' + voteObj.vote);
+    socket.emit('roundVote', (voteObj));    
+  }
 
+  showID() {
+    console.log(this.state.playerID);
+  }
+
+  isPicker(picked) {
+    console.log(this.state.resultsArray);
+    console.log('picker', this.state.picker);
+    console.log('picked', picked);
+    console.log(this.state.playerID === this.state.picker);
+    if (this.state.playerID === this.state.picker) {
+      socket.emit('selectUser', picked);
+    }
+  }
 
   render() {
     return (
       <div>
         <Signup />
         <p> This is working</p>
-        <button onClick={() => { console.log(this.state); socket.emit('channel-name', 'Hello world!'); }}>Emit Me</button>
-        {/*return <input type='checkbox' checked={userInput.vote} onChange={() => { socket.emit('checked'); this.handleCheck(this.key); }} />;*/}
+        <button onClick={() => { socket.emit('cleanPlayers'); }}>clean players</button>
+        <button onClick={() => { this.showID(); }}>show my id</button>
+        <button onClick={() => { socket.emit('gameStart'); }}>start game</button>
+        
         {this.state.resultsArray.map((userInput) => {
-          return <InputItem vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} socket={socket} />;
+          return <InputItem isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} />;
         }
         )}
       </div>

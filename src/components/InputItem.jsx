@@ -9,6 +9,9 @@ class InputItem extends React.Component {
     return (
       <div>
         {/*{console.log('props in inputItem ', this.props)}*/}
+        <div onClick={()=>{ this.props.isPicker(this.props.userID); }}>{this.props.userID}</div>
+        <button onClick={()=>{ this.props.roundVote({user: this.props.userID, vote: true}); }}>PASS</button>
+        <button onClick={()=>{ this.props.roundVote({user: this.props.userID, vote: false}); }}>FAIL</button>
         <input
           type='checkbox'
           checked={this.props.vote}
