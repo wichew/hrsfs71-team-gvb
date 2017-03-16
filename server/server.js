@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 const path = require('path');
+const db = require('./db/index.js');
 
 var app = express();
 var server = require('http').createServer(app);
@@ -11,9 +12,7 @@ var io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3000;
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/test');
-
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/bundle', express.static(path.join(__dirname, '../bundle')));
@@ -58,7 +57,6 @@ let selectCounter = 0;
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-
   //creates user item and puts it in the array
   userArray.push({
     name: null,
@@ -186,9 +184,6 @@ io.on('connection', (socket) => {
     socket.emit('upDateChecks', array);
   });
 
-
-
-
   //counts all votes and finds majority
   countMajorityVote = () => {
     console.log('we got inside the countMajorityVote func!');
@@ -221,5 +216,4 @@ io.on('connection', (socket) => {
 
 });
 
-
-server.listen(PORT, () => (console.log('we are listening on port', PORT)));
+server.listen(PORT, () => (console.log('we are listening on port', PORT)) );

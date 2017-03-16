@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Signup from './components/Signup.jsx';
-import SocketIOClient from 'socket.io-client';
-import InputItem from './components/InputItem.jsx';
+import App from './components/App.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
 
