@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Link, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Home from './Home.jsx';
@@ -16,8 +16,9 @@ const App = () => {
   return (
     <Router>
       <div>
+        {/*<Route exact path='/' render={() => <Home /> } />*/}
         <Route exact path='/' render={() => {
-          loggedin ? <Redirect to='/home' /> : <Redirect to='/login' />;
+          return loggedin ? <Redirect to='/home' /> : <Redirect to='/login' />;
         }}/>
         <Route path='/home' component={Home}/>
         <Route path='/login' component={Login}/>
@@ -25,7 +26,7 @@ const App = () => {
         <Route path='/creategame' render={() => <CreateGame user={username}/>}/>
         <Route path='/joingame' render={() => <JoinGame user={username}/>}/>
         <Route path='/game/lobby' render={() => {
-          (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
+          return (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
         }}/>
         <Route path='/game/vote' render={() => <Vote user={username}/>}/>
       </div>

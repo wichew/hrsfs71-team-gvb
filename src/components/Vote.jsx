@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import SocketIOClient from 'socket.io-client';
 import InputItem from './InputItem.jsx';
 
-// var socket = SocketIOClient('http://localhost:3000');
+var socket = SocketIOClient('http://localhost:3000');
 
 class Vote extends React.Component {
   constructor(props) {

@@ -9,8 +9,8 @@ const loggedin = true;
 const Home = () => {
   return (
     <div>
-      <Link path='/creategame' component={CreateGame}>Create Game</Link>
-      <Link path='/joingame' component={JoinGame}>Join Game</Link>
+      <div><Link to='/creategame'>Create Game</Link></div>
+      <div><Link to='/joingame'>Join Game</Link></div>
     </div>
   );
 };

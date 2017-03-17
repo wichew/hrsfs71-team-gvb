@@ -17,7 +17,7 @@ class GameLobby extends React.Component {
   render () {
     return (
         <div>
-          <Link path='/game/vote'>Force Start</Link>
+          <Link to='/game/vote'>Force Start</Link>
         </div>
     );
   }  

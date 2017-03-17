@@ -5,7 +5,7 @@ const JoinGame = () => {
   return (
     <div>
       <div>TODO: Add dropdown to choose game to join</div>
-      <Link path='/game/lobby'>Play!</Link>
+      <Link to='/game/lobby'>Play!</Link>
     </div>
   );
 };
