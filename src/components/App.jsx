@@ -1,46 +1,30 @@
-/*
-This is both the entry point to the app and the route config
-Login or signup
---> Create or Join
-
-From Create
---> Game (Waiting Room)
-
-From Join
---> Game (Waiting Room)
-
-From Game (Waiting Room)
-(this is where socket connection and other state is held)
---> Vote (for now, later, we'll have:
-- BuildMissionTeam
-- VoteOnSendingMission
-- VoteOnMissionSuccess
-
-From Vote (or maybe this is the same component)
---> VoteResults
-*/
-
 import React from 'react';
-import { HashRouter as Router, Link, Route } from 'react-router-dom';
-import { Redirect } from 'react-router';
-// import Vote from './Vote.jsx';
+import { HashRouter as Router, Link, Route, Redirect } from 'react-router-dom';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
+import Home from './Home.jsx';
+import GameLobby from './GameLobby.jsx';
+import CreateGame from './CreateGame.jsx';
+import JoinGame from './JoinGame.jsx';
+import Vote from './Vote.jsx';
+
+//hard coded until auth is implemented
+const loggedin = true;
 
 const App = () => {
   return (
-    <Router basename='/play'>
+    <Router>
       <div>
-        <p>Good-v-Bad: The Game</p>
-        <div>
-          <div><Link to='/signup'>Signup</Link></div>
-          <div><Link to='/login'>Signup</Link></div>
-          {/*<div><Link to='/vote'>Vote</Link></div>*/}
-        </div>
-        <hr/>
-        <Route path='/signup' component={Signup}/>
+        <Route exact path='/' render={() => {
+          loggedin ? <Redirect to='/home' /> : <Redirect to='/login' />;
+        }}/>
+        <Route path='/home' component={Home}/>
         <Route path='/login' component={Login}/>
-        {/*<Route path='/vote' component={Vote}/>*/}
+        <Route path='/signup' component={Signup}/>
+        <Route path='/creategame' component={CreateGame}/>
+        <Route path='/joingame' component={JoinGame}/>
+        <Route path='/game/lobby' component={GameLobby}/>
+        <Route path='/game/vote' component={Vote}/>
       </div>
     </Router>
   );
