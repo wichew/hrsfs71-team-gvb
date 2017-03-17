@@ -10,6 +10,7 @@ import Vote from './Vote.jsx';
 
 //hard coded until auth is implemented
 const loggedin = true;
+const username = 'player1';
 
 const App = () => {
   return (
@@ -21,10 +22,12 @@ const App = () => {
         <Route path='/home' component={Home}/>
         <Route path='/login' component={Login}/>
         <Route path='/signup' component={Signup}/>
-        <Route path='/creategame' component={CreateGame}/>
-        <Route path='/joingame' component={JoinGame}/>
-        <Route path='/game/lobby' component={GameLobby}/>
-        <Route path='/game/vote' component={Vote}/>
+        <Route path='/creategame' render={() => <CreateGame user={username}/>}/>
+        <Route path='/joingame' render={() => <JoinGame user={username}/>}/>
+        <Route path='/game/lobby' render={() => {
+          (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
+        }}/>
+        <Route path='/game/vote' render={() => <Vote user={username}/>}/>
       </div>
     </Router>
   );
