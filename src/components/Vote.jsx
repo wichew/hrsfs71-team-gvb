@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import SocketIOClient from 'socket.io-client';
 import InputItem from './InputItem.jsx';
 
-var socket = SocketIOClient('http://localhost:3000');
+// var socket = SocketIOClient('http://localhost:3000');
 
 class Vote extends React.Component {
   constructor(props) {
@@ -17,13 +17,6 @@ class Vote extends React.Component {
     socket.on('upDateChecks', (array)=> { console.log('upDateChecks ', array); this.setState({ resultsArray: array }); });
     this.handleCheck = this.handleCheck.bind(this);
   }
-
-  // componentDidMount() {
-  //   this.setState({
-  //     resultsArray: [{ userID: 'test', vote: false, key: 'testKey' }, { userID: 'derek', vote: false, key: 'derekKey' }]
-  //   });
-  // }
-
 
   handleCheck(userID) {
     console.log('handleCheck userID', userID);
@@ -39,8 +32,6 @@ class Vote extends React.Component {
       resultsArray: otherArray
     });
   }
-
-
 
   render() {
     return (
