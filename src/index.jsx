@@ -1,8 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App.jsx';
+import Signup from './components/Signup.jsx';
+import SocketIOClient from 'socket.io-client';
+import InputItem from './components/InputItem.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
+
 
 class Index extends React.Component {
   constructor(props) {
@@ -59,10 +62,6 @@ class Index extends React.Component {
       socket.emit('selectUser', picked);
       console.log(this.state.resultsArray);
     }
-  }
-
-  showVoteBoxes() {
-
   }
 
   render() {

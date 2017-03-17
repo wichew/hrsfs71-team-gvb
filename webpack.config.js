@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval',
   entry: [    
     path.join(__dirname + '/src/index.jsx'),
   ],
