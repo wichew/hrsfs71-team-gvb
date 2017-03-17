@@ -8,16 +8,13 @@ var socket = SocketIOClient('http://localhost:3000');
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isGoing: false,
+    this.state = {      
       resultsArray: [],
       playerID: '',
       picker: '',
       voteBoxes: false
-    };
-    // socket.on('testCheck', (userArray) => { this.setState({ resultsArray: userArray }); console.log('we are over here', userArray); this.handleCheck(); });
-    socket.on('playerJoined', (array) => { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });
-    socket.on('upDateChecks', (array) => { console.log('upDateChecks ', array); this.setState({ resultsArray: array }); });
+    };    
+    socket.on('playerJoined', (array) => { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });    
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); });
     socket.on('setPicker', (pickerObj) => { console.log('the picker is:', pickerObj.picker); this.setState({ picker: pickerObj.picker, resultsArray: pickerObj.array }); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
@@ -64,8 +61,7 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>        
-        <p> This is working</p>
+      <div>                 
         <p><b>{this.state.playerID}</b></p>
         <button onClick={() => { socket.emit('cleanPlayers'); }}>clean players</button>        
         <button onClick={() => { this.showID(); }}>show my id</button>
