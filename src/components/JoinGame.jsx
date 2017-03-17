@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Link, Route, Redirect } from 'react-router-dom';
+import { Link, Route, Redirect } from 'react-router-dom';
 
 const JoinGame = () => {
   return (

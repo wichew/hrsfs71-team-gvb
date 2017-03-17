@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Link, Route, Redirect } from 'react-router-dom';
+import { Link, Route, Redirect } from 'react-router-dom';
 
 // will need api call in here to sign the user up
 // simpler to take care of login only in login page, so 
