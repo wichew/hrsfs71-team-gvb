@@ -71,60 +71,69 @@ io.on('connection', (socket) => {
   });
 
 
+  //send each client an id
+  socket.emit('setPlayerID', socket.client.id);
+
+
   //getPlayerAmount
   socket.on('gameStart', () => {
-    console.log('getReqPlayers', userArray.length);
     //if there are 5 players invoke setCoin
     if (userArray.length === 5) {
       console.log('starting game');
       setCoin();
+    } else {
+      console.log('not enought players yet!');
     }
   });
 
-
+  //give player picker status
   setCoin = () => {
-    console.log('setCoin');
     userArray[coinCounter % userArray.length].picker = true;
 
-    socket.emit('setPicker', (userArray[coinCounter % userArray.length].userID));
-    socket.broadcast.emit('setPicker', (userArray[coinCounter % userArray.length].userID));
+    socket.emit('setPicker', ({ picker: userArray[coinCounter % userArray.length].userID, array: userArray }));
+    socket.broadcast.emit('setPicker', ({ picker: userArray[coinCounter % userArray.length].userID, array: userArray }));
 
-    console.log('didid we change it?', userArray[coinCounter % userArray.length].picker);
     coinCounter++;
-    console.log('coinCounter ', coinCounter);
 
   };
 
-
-  startGroupVote = () => {
-    console.log('we are counting votes now');
-  };
-
+//picker selects which user to add to the group
   socket.on('selectUser', (picked) => {
+    console.log('in selectUser');
     userArray.forEach((el) => {
       if (el.userID === picked) {
-        if (el.selected === false) {
-          selectCounter++;
-          el.selected = true;
+        if (selectCounter < 3) {
+          if (el.selected === false) {
+            selectCounter++;
+            el.selected = true;
+          } else {
+            selectCounter--;
+            el.selected = false;
+          }
+          
+          updateClientArray();
+
+          if (selectCounter === 3) {
+            startGroupVote();
+          }
         } else {
-          selectCounter--;
-          el.selected = false;
+          socket.emit('error', 'you selected too many! Deselect one');          
         }
-      }
-      console.log(selectCounter);
-      if (selectCounter >= 3) {
-        startGroupVote();
       }
     });
   });
 
+  updateClientArray = () => {
+    console.log('in updateClientArray ', userArray);
 
+    socket.broadcast.emit('updateArray', userArray);
+    socket.emit('updateArray', userArray);
 
-  //send each client an id
-  socket.emit('setPlayerID', socket.client.id);
+  };
+
 
   //resets each players roundVote missionVote picker selected 
-  socket.on('cleanPlayers', () => {
+  cleanPlayers = () => {
     console.log('scrub that dirty player down');
     userArray.forEach((el, i) => {
       el.missionVote = null;
@@ -132,7 +141,7 @@ io.on('connection', (socket) => {
       el.picker = false;
       el.selected = false;
     });
-  });
+  };
 
   var addToCounter = function () {
     roundCounter += 1;
@@ -143,9 +152,18 @@ io.on('connection', (socket) => {
     }
   };
 
+  startGroupVote = () => {
+    console.log('Start Voting Now:');
+    //send that user vote box component
+    socket.broadcast.emit('voteBoxes', true);
+    socket.emit('voteBoxes', true);
+  };
+
   //sets player vote to pass or fail
   socket.on('roundVote', (voteObj) => {
     // console.log('in the roundVote on server', voteObj.user + ' ' + voteObj.vote);
+    console.log(voteObj);
+
     userArray.forEach((el, i) => {
       if (el.userID === voteObj.user) {
 
@@ -196,11 +214,34 @@ io.on('connection', (socket) => {
         falseCount++;
       }
     }
-    console.log('false ' + falseCount + 'true ' + trueCount);
+
+    //if group vote fails
+    if (falseCount > trueCount) {
+      //run groupVoteFailed
+      groupVoteFailed();
+    }
+
+    console.log('false ' + falseCount + ', true ' + trueCount);
     console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');
     return trueCount > falseCount ? 'vote passes' : 'vote fails';
   };
 
+  groupVoteFailed = () => {
+    //we want to clean the players
+    cleanPlayers();    
+
+    socket.broadcast.emit('setPicker', '');
+    socket.emit('setPicker', '');
+
+    socket.broadcast.emit('voteBoxes', false);
+    socket.emit('voteBoxes', false);
+    
+    updateClientArray();  
+        
+    setCoin();
+    //and set the next user to as the picker
+
+  };
 
   //on leaving
   socket.on('disconnect', () => {
