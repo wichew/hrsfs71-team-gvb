@@ -16,7 +16,7 @@ class Index extends React.Component {
       playerID: '',
       picker: '',
       voteBoxes: false
-    };
+    }; 
     // socket.on('testCheck', (userArray) => { this.setState({ resultsArray: userArray }); console.log('we are over here', userArray); this.handleCheck(); });
     socket.on('playerJoined', (array) => { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });
     socket.on('upDateChecks', (array) => { console.log('upDateChecks ', array); this.setState({ resultsArray: array }); });
@@ -67,7 +67,6 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        <Signup />
         <p> This is working</p>
         <p><b>{this.state.playerID}</b></p>
         <button onClick={() => { socket.emit('cleanPlayers'); }}>clean players</button>        
@@ -88,3 +87,45 @@ class Index extends React.Component {
 }
 
 ReactDOM.render(<Index />, document.getElementById('root'));
+
+/*
+For react-router v3, routes go in the render method.
+Here is how they might be setup:
+
+ReactDOM.render(  
+  <Router history={hashHistory}>
+    <Route path="/" component={App}/>
+    // "/" renders Login if not logged in
+    // "/" renders App if you are logged in 
+    <Route path="login" component={Login}/>
+    <Route path="signup" component={Signup} />
+    <Route path="/" component={Signup} />
+    <Route path="vote" component={Vote} />
+  </Router>
+  , document.getElementById('root'));
+
+From App 
+--> Login or signup
+
+From Signup
+--> Login
+
+From Login
+--> Create or Join
+
+From Create
+--> Game (Waiting Room)
+
+From Join
+--> Game (Waiting Room)
+
+From Game (Waiting Room)
+(this is where socket connection and other state is held)
+--> Vote (for now, later, we'll have:
+- BuildMissionTeam
+- VoteOnSendingMission
+- VoteOnMissionSuccess
+
+From Vote (or maybe this is the same component)
+--> VoteResults
+*/
