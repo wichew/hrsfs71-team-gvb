@@ -1,6 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 const path = require('path');
@@ -12,10 +10,8 @@ var io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3000;
 
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../public')));
-app.use('/bundle', express.static(path.join(__dirname, '../bundle')));
+// middleware body-parser, static files & morgan
+require(path.join(__dirname, './middleware/config.js'))(app, express);
 
 let userArray = [];
 //create quest obj
