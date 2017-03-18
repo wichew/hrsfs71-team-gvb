@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom';
+import { HashRouter as Router, Link, Route, Redirect } from 'react-router-dom';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Home from './Home.jsx';
