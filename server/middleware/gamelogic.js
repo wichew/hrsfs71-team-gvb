@@ -149,19 +149,19 @@ module.exports = function (app, express, server) {
         if (el.userID === voteObj.user) {
           console.log(el.userID + ' ' + el.roundVote);
           //keeps track of how many players have voted
-          if (el.roundVote === null) {
-            addToCounter();
-          }
+          
           if (voteObj.vote === true) {
             // console.log('we got here insite the vote change');
             el.roundVote = true;
             // console.log('after the change', userArray);
           } else {
             el.roundVote = false;
-          }
-
-          updateClientArray();   
+          }          
         }
+        updateClientArray(); 
+        if (el.roundVote === null) {
+          addToCounter();
+        }  
       });
     });
 
@@ -196,10 +196,9 @@ module.exports = function (app, express, server) {
       io.emit('setPicker', '');
       io.emit('voteBoxes', false);
       selectCounter = 0;
-      roundCounter = 0;
-      cleanPlayers();         
-      setCoin(); 
-           
+      roundCounter = 0;               
+      setCoin();            
+      updateClientArray();
     };
 
     //on leaving
