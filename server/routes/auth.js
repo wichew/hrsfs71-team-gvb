@@ -24,7 +24,17 @@ router.get('/users/:username', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  res.send('You sent a post to /db/login!');
+  let username = req.body.username;
+  let password = req.body.password;
+
+  dbUtils.findUser(username, (user) => {
+    if(!user) {
+      res.status(404).send('Username was not found');
+    } else {
+      res.status(200).json(user);
+    }
+  });
+  // res.send('You sent a post to /db/login!');
 });
 
 
