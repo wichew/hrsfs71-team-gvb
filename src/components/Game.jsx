@@ -1,6 +1,6 @@
 import React from 'react';
 import SocketIOClient from 'socket.io-client';
-import InputItem from './InputItem.jsx';
+import Player from './Player.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
 
@@ -76,7 +76,7 @@ class Game extends React.Component {
         </div>
           : <p>{'wait'}</p>}
         {this.state.resultsArray.map((userInput) => {
-          return <InputItem selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
+          return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
         }
         )}
 
