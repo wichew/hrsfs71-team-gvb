@@ -23,4 +23,19 @@ router.get('/users/:username', (req, res) => {
   });
 });
 
+router.post('/login', (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  dbUtils.findUser(username, (user) => {
+    if(!user) {
+      res.status(404).send('Username was not found');
+    } else {
+      dbUtils.checkUserPassword(username, password, null);
+      res.status(200).json(user);
+    }
+  });
+});
+
+
 module.exports = router;
