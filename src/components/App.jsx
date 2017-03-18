@@ -24,7 +24,6 @@ const App = () => {
         <Route path='/login' component={Login}/>
         <Route path='/signup' component={Signup}/>
         <Route path='/creategame' render={() => <CreateGame user={username}/>}/>
-        <Route path='/joingame' render={() => <JoinGame user={username}/>}/>
         <Route path='/game/lobby' render={() => {
           return (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
         }}/>
