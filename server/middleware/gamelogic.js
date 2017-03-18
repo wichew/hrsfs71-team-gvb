@@ -71,10 +71,11 @@ module.exports = function (app, express, server) {
       //if there are 5 players invoke setCoin
       if (userArray.length === 5) {
         cleanPlayers();
-        io.emit('voteBoxes', false);
+        io.emit('voteBoxes', false);        
+        io.emit('updateQuest', quest);
+        setCoin();        
+        updateClientArray();        
         console.log('starting game');
-        setCoin();
-        updateClientArray();
       } else {
         console.log('not enought players yet!');
       }
@@ -86,6 +87,8 @@ module.exports = function (app, express, server) {
       userArray[pickedUser].picker = true;
       io.emit('setPicker', ({ picker: userArray[pickedUser].userID }));
       coinCounter++;
+      io.emit('updateCoinCounter', coinCounter);
+      io.emit('updateQuest', quest);
     };
 
     //picker selects which user to add to the group
@@ -93,24 +96,32 @@ module.exports = function (app, express, server) {
       
       userArray.forEach((player) => {
         if (player.userID === picked) {
-          if (selectCounter < quest[questCounter].numberOfPlayers) {
-            if (player.selected === false) {
-              selectCounter++;
-              player.selected = true;
-            } else {
-              selectCounter--;
-              player.selected = false;
-            }
-            updateClientArray();
-
-            if (selectCounter === quest[questCounter].numberOfPlayers) {
-              startGroupVote();
-            }
+       
+          if (player.selected === false) {
+            selectCounter++;
+            player.selected = true;
           } else {
-            io.emit('error', 'you selected too many! Deselect one');
+            selectCounter--;
+            player.selected = false;
           }
+          updateClientArray();
+
+          if (selectCounter === quest[questCounter].numberOfPlayers) {
+            //send confirm button
+            console.log('confirmGroupBtn sent');
+            socket.emit('confirmGroupBtn', true);
+          } else {
+            socket.emit('confirmGroupBtn', false);
+          }       
         }
       });
+
+    });
+
+    socket.on('groupConfirmed', () =>{
+      console.log('in groupConfirmed');
+      socket.emit('confirmGroupBtn', false);
+      startGroupVote();
     });
 
     let updateClientArray = () => {
