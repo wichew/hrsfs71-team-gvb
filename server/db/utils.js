@@ -7,7 +7,6 @@ module.exports.addUser = (username, password) => {
     if (err) {
       throw err;
     } else if (user.length) {
-      console.log('user already exists');
       return null;
     } else {
       User.create({name: username, password: password}, (err, newUser) => {
@@ -33,6 +32,10 @@ module.exports.findUser = (username, password) => {
   });
 };
 
+
+// TODO: These seeding functions are not yet working
+User.remove({});
+
 var seedUsers = [
   { name: 'a',
     password: 'a'
@@ -45,6 +48,6 @@ var seedUsers = [
   },
 ];
 
-seedUsers.forEach((user, i) => {
-  console.log('result of add:', module.exports.addUser(user.name, user.password));
+seedUsers.forEach((user) => {
+  module.exports.addUser(user.name, user.password);
 });

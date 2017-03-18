@@ -9,7 +9,7 @@ import JoinGame from './JoinGame.jsx';
 import Vote from './Vote.jsx';
 
 //hard coded until auth is implemented
-const loggedin = true;
+const loggedin = false;
 const username = 'player1';
 
 const App = () => {
