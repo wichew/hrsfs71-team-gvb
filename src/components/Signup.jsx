@@ -10,28 +10,51 @@ class Signup extends React.Component {
   constructor({pathname}) {
     super({pathname});
     this.state = {
-      username: '',
-      password: ''
+      user: {  
+        username: '',
+        password: ''
+      },
+      validationMsg: '',
+      validationClass: 'success'
     };
     this.updateState = this.updateState.bind(this);
     this.submit = this.submit.bind(this);
   }
 
   updateState (e) {
-    console.log('updating field: ', e.target.name, 'with value', e.target.value);
-    this.setState({[e.target.name]: e.target.value});
+    let updatedUser = Object.assign({}, this.state.user, {[e.target.name]: e.target.value});
+    console.log('updatedUser: ', updatedUser);
+    this.setState({user: updatedUser}, () => {
+      console.log('this.state.user post setState:', this.state.user);
+    });
   } 
-
+  
   submit () {
-    console.log('sending post to server for ', this.state);
-    axios.post('/db/users', this.state);
+    let localThis = this;
+    axios.post('/db/users', this.state.user)
+    .then((response) => {
+      if (response.status === 201) {
+        this.setState({
+          validationMsg: 'User ' + this.state.user.username + ' successfully added',
+          validationClass: 'successMsg'
+        });
+      }
+    })
+    .catch(function (error) {
+      localThis.setState({
+        validationMsg: 'Sign-up failed. User might already exists. Go to login or try another username.',
+        validationClass: 'errorMsg'
+      });
+      console.log(error);
+    });
+    this.setState({username: '', password: ''});
   }
 
   render () {
     return (
       <div>
         <div id = 'signupPage'>
-          <p>{this.pathname}</p>
+          <h2>Sign-Up</h2>
           <div>
             <span>Username</span>
             <input type='text' onChange={this.updateState} name='username' />
@@ -42,8 +65,9 @@ class Signup extends React.Component {
           </div>
         </div>
         <div>
+          <p className={this.state.validationClass}>{this.state.validationMsg}</p>
           <button onClick={this.submit}>Signup</button>
-          <Link to='/login'><button>Login</button></Link>
+          <Link to='/login'>Go to Login</Link>
         </div>
       </div>
     );
