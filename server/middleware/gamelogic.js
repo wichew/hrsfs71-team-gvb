@@ -81,8 +81,8 @@ module.exports = function (app, express, server) {
     let setCoin = () => {
       let pickedUser = coinCounter % userArray.length;
       userArray[pickedUser].picker = true;
-      io.emit('setPicker', ({ picker: userArray[pickedUser].userID}));
-      coinCounter++;         
+      io.emit('setPicker', ({ picker: userArray[pickedUser].userID }));
+      coinCounter++;
     };
 
     //picker selects which user to add to the group
@@ -127,11 +127,7 @@ module.exports = function (app, express, server) {
 
     let addToCounter = function () {
       console.log('add to counter ', roundCounter);
-      roundCounter += 1;
-      if (roundCounter === userArray.length) {
-        console.log('all are counted');
-        countMajorityVote();
-      }
+      roundCounter += 1;      
     };
 
     let startGroupVote = () => {
@@ -159,8 +155,11 @@ module.exports = function (app, express, server) {
           } else {
             el.roundVote = false;
           }
-
-          updateClientArray();   
+        }
+        updateClientArray();
+        if (roundCounter === userArray.length) {
+          console.log('all are counted');
+          countMajorityVote();
         }
       });
     });
@@ -187,19 +186,18 @@ module.exports = function (app, express, server) {
         //enter the win ring
       }
       console.log('false ' + falseCount + ', true ' + trueCount);
-      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');    
+      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');
     };
 
     let groupVoteFailed = () => {
       //we want to clean the players
-      cleanPlayers();      
+      cleanPlayers();
       io.emit('setPicker', '');
       io.emit('voteBoxes', false);
       selectCounter = 0;
       roundCounter = 0;
-      cleanPlayers();         
-      setCoin(); 
-           
+      setCoin();
+      updateClientArray();
     };
 
     //on leaving

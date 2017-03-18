@@ -6,7 +6,7 @@ import Home from './Home.jsx';
 import GameLobby from './GameLobby.jsx';
 import CreateGame from './CreateGame.jsx';
 import JoinGame from './JoinGame.jsx';
-import Vote from './Vote.jsx';
+import Game from './Game.jsx';
 
 //hard coded until auth is implemented
 const loggedin = false;
@@ -29,7 +29,9 @@ const App = () => {
           return (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
         }}/>
         <Route path='/game/vote' render={() => <Vote user={username}/>}/>
+      <Game/>
       </div>
+      
     </Router>
   );
 };
