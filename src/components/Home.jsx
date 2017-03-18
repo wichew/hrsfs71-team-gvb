@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Route, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import CreateGame from './CreateGame.jsx';
 import JoinGame from './JoinGame.jsx';
 
@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div>
       <div><Link to='/creategame'>Create Game</Link></div>
-      <div><Link to='/joingame'>Join Game</Link></div>
+      <div><Link to='/game/lobby'>Join Game</Link></div>
     </div>
   );
 };
