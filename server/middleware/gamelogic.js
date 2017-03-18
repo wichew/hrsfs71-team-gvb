@@ -3,7 +3,7 @@
 const express = require('express');
 const socket = require('socket.io');
 
-module.exports = function(app, express, server) {
+module.exports = function (app, express, server) {
 
   // let server = require('http').createServer(app);
   let io = require('socket.io')(server);
@@ -62,10 +62,8 @@ module.exports = function(app, express, server) {
       key: socket.client.id
     });
 
-
     //send each client an id
     socket.emit('setPlayerID', socket.client.id);
-
 
     //getPlayerAmount
     socket.on('gameStart', () => {
@@ -73,23 +71,21 @@ module.exports = function(app, express, server) {
       if (userArray.length === 5) {
         console.log('starting game');
         setCoin();
+        updateClientArray();
       } else {
         console.log('not enought players yet!');
       }
     });
 
-  //give player picker status
+    //give player picker status
     let setCoin = () => {
-      userArray[coinCounter % userArray.length].picker = true;
-
-      socket.emit('setPicker', ({ picker: userArray[coinCounter % userArray.length].userID, array: userArray }));
-      socket.broadcast.emit('setPicker', ({ picker: userArray[coinCounter % userArray.length].userID, array: userArray }));
-
-      coinCounter++;
-
+      let pickedUser = coinCounter % userArray.length;
+      userArray[pickedUser].picker = true;
+      io.emit('setPicker', ({ picker: userArray[pickedUser].userID}));
+      coinCounter++;         
     };
 
-//picker selects which user to add to the group
+    //picker selects which user to add to the group
     socket.on('selectUser', (picked) => {
       console.log('in selectUser');
       userArray.forEach((el) => {
@@ -102,27 +98,20 @@ module.exports = function(app, express, server) {
               selectCounter--;
               el.selected = false;
             }
-            
             updateClientArray();
-
             if (selectCounter === 3) {
               startGroupVote();
             }
           } else {
-            socket.emit('error', 'you selected too many! Deselect one');          
+            io.emit('error', 'you selected too many! Deselect one');
           }
         }
       });
     });
 
     let updateClientArray = () => {
-      console.log('in updateClientArray ', userArray);
-
-      socket.broadcast.emit('updateArray', userArray);
-      socket.emit('updateArray', userArray);
-
+      io.emit('updateArray', userArray);
     };
-
 
     //resets each players roundVote missionVote picker selected 
     let cleanPlayers = () => {
@@ -133,22 +122,22 @@ module.exports = function(app, express, server) {
         el.picker = false;
         el.selected = false;
       });
+      console.log('all cleaned');
     };
 
     let addToCounter = function () {
+      console.log('add to counter ', roundCounter);
       roundCounter += 1;
       if (roundCounter === userArray.length) {
         console.log('all are counted');
-        //invoke countMajorityVote
         countMajorityVote();
       }
     };
 
     let startGroupVote = () => {
       console.log('Start Voting Now:');
-      //send that user vote box component
-      socket.broadcast.emit('voteBoxes', true);
-      socket.emit('voteBoxes', true);
+      //send that user vote box component      
+      io.emit('voteBoxes', true);
     };
 
     //sets player vote to pass or fail
@@ -158,12 +147,11 @@ module.exports = function(app, express, server) {
 
       userArray.forEach((el, i) => {
         if (el.userID === voteObj.user) {
-
+          console.log(el.userID + ' ' + el.roundVote);
           //keeps track of how many players have voted
           if (el.roundVote === null) {
             addToCounter();
           }
-          // console.log('we found a match');
           if (voteObj.vote === true) {
             // console.log('we got here insite the vote change');
             el.roundVote = true;
@@ -172,27 +160,13 @@ module.exports = function(app, express, server) {
             el.roundVote = false;
           }
 
-          socket.broadcast.emit('playerJoined', userArray);
-          socket.emit('playerJoined', userArray);
-
-          // console.log('vote has changed to ' + el.roundVote + ' ' + el.userID);
-          //update the roundCounter      
+          updateClientArray();   
         }
       });
     });
 
     //send all to users // try using for: 'everyone'
-    socket.broadcast.emit('playerJoined', userArray);
-    socket.emit('playerJoined', userArray);
-
-
-    //updates the array
-    socket.on('updateCheckArray', (array) => {
-      console.log('updateCheckArray', array);
-      userArray = array;
-      socket.broadcast.emit('upDateChecks', array);
-      socket.emit('upDateChecks', array);
-    });
+    updateClientArray();
 
     //counts all votes and finds majority
     let countMajorityVote = () => {
@@ -206,33 +180,26 @@ module.exports = function(app, express, server) {
           falseCount++;
         }
       }
-
       //if group vote fails
       if (falseCount > trueCount) {
-        //run groupVoteFailed
         groupVoteFailed();
+      } else {
+        //enter the win ring
       }
-
       console.log('false ' + falseCount + ', true ' + trueCount);
-      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');
-      return trueCount > falseCount ? 'vote passes' : 'vote fails';
+      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');    
     };
 
     let groupVoteFailed = () => {
       //we want to clean the players
-      cleanPlayers();    
-
-      socket.broadcast.emit('setPicker', '');
-      socket.emit('setPicker', '');
-
-      socket.broadcast.emit('voteBoxes', false);
-      socket.emit('voteBoxes', false);
-      
-      updateClientArray();  
-          
-      setCoin();
-      //and set the next user to as the picker
-
+      cleanPlayers();      
+      io.emit('setPicker', '');
+      io.emit('voteBoxes', false);
+      selectCounter = 0;
+      roundCounter = 0;
+      cleanPlayers();         
+      setCoin(); 
+           
     };
 
     //on leaving
@@ -243,10 +210,8 @@ module.exports = function(app, express, server) {
           break;
         }
       }
-      socket.broadcast.emit('upDateChecks', userArray);
+      updateClientArray();
       console.log('user disconnected');
     });
-
   });
-
 };
