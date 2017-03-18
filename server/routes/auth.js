@@ -23,4 +23,9 @@ router.get('/users/:username', (req, res) => {
   });
 });
 
+router.post('/login', (req, res) => {
+  res.send('You sent a post to /db/login!');
+});
+
+
 module.exports = router;
