@@ -13,11 +13,10 @@ class Game extends React.Component {
       playerID: '',
       picker: '',
       voteBoxes: false
-    };    
-    socket.on('playerJoined', (array) => { console.log('playerJoined ', array); this.setState({ resultsArray: array }); });    
+    };        
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); });
-    socket.on('setPicker', (pickerObj) => { console.log('the picker is:', pickerObj.picker); this.setState({ picker: pickerObj.picker, resultsArray: pickerObj.array }); });
-    socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
+    socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker}); });
+    socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Sent:', array); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) =>{ this.setState({voteBoxes: bool}); });
     socket.on('error', (errorMsg)=>{ console.log(errorMsg); });
 

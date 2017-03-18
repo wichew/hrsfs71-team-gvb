@@ -71,6 +71,7 @@ module.exports = function (app, express, server) {
       if (userArray.length === 5) {
         console.log('starting game');
         setCoin();
+        updateClientArray();
       } else {
         console.log('not enought players yet!');
       }
@@ -78,10 +79,10 @@ module.exports = function (app, express, server) {
 
     //give player picker status
     let setCoin = () => {
-      let thing = coinCounter % userArray.length;
-      userArray[thing].picker = true;
-      io.emit('setPicker', ({ picker: userArray[thing].userID, array: userArray }));
-      coinCounter++;      
+      let pickedUser = coinCounter % userArray.length;
+      userArray[pickedUser].picker = true;
+      io.emit('setPicker', ({ picker: userArray[pickedUser].userID}));
+      coinCounter++;         
     };
 
     //picker selects which user to add to the group
@@ -112,7 +113,6 @@ module.exports = function (app, express, server) {
       io.emit('updateArray', userArray);
     };
 
-
     //resets each players roundVote missionVote picker selected 
     let cleanPlayers = () => {
       console.log('scrub that dirty player down');
@@ -122,9 +122,11 @@ module.exports = function (app, express, server) {
         el.picker = false;
         el.selected = false;
       });
+      console.log('all cleaned');
     };
 
     let addToCounter = function () {
+      console.log('add to counter ', roundCounter);
       roundCounter += 1;
       if (roundCounter === userArray.length) {
         console.log('all are counted');
@@ -145,7 +147,7 @@ module.exports = function (app, express, server) {
 
       userArray.forEach((el, i) => {
         if (el.userID === voteObj.user) {
-
+          console.log(el.userID + ' ' + el.roundVote);
           //keeps track of how many players have voted
           if (el.roundVote === null) {
             addToCounter();
@@ -158,10 +160,7 @@ module.exports = function (app, express, server) {
             el.roundVote = false;
           }
 
-          updateClientArray();
-
-          // console.log('vote has changed to ' + el.roundVote + ' ' + el.userID);
-          //update the roundCounter      
+          updateClientArray();   
         }
       });
     });
@@ -193,12 +192,14 @@ module.exports = function (app, express, server) {
 
     let groupVoteFailed = () => {
       //we want to clean the players
-      cleanPlayers();
+      cleanPlayers();      
       io.emit('setPicker', '');
       io.emit('voteBoxes', false);
-      updateClientArray();
-      setCoin();      
       selectCounter = 0;
+      roundCounter = 0;
+      cleanPlayers();         
+      setCoin(); 
+           
     };
 
     //on leaving
