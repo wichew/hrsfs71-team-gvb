@@ -5,14 +5,13 @@ class InputItem extends React.Component {
     super(props);
   }
 
-  render() {   
-    console.log(this.props.selected); 
+  render() {       
     return (
       <div>        
         {/*{console.log('props in inputItem ', this.props)}*/}
 
         <div onClick={()=>{ this.props.isPicker(this.props.userID); }} style={{backgroundColor: this.props.selected ? 'lightblue' : 'white'}} >
-          {this.props.userID}    {this.props.pickerID === this.props.userID ? 'picker' : '' }
+          {this.props.userID}     {this.props.pickerID === this.props.userID ? 'picker' : '' }
           </div>        
 
           <div>
