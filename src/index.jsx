@@ -6,6 +6,7 @@ import Game from './components/Game.jsx';
 class Index extends React.Component {
   constructor(props) {
     super(props);    
+
   }
   render() {
     return (
@@ -17,4 +18,4 @@ class Index extends React.Component {
   }
 }
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

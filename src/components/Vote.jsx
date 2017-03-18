@@ -18,13 +18,6 @@ class Vote extends React.Component {
     this.handleCheck = this.handleCheck.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     resultsArray: [{ userID: 'test', vote: false, key: 'testKey' }, { userID: 'derek', vote: false, key: 'derekKey' }]
-  //   });
-  // }
-
-
   handleCheck(userID) {
     console.log('handleCheck userID', userID);
     var otherArray = this.state.resultsArray.slice();
@@ -39,8 +32,6 @@ class Vote extends React.Component {
       resultsArray: otherArray
     });
   }
-
-
 
   render() {
     return (

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, Route, Redirect } from 'react-router-dom';
 
-const CreateGame = () => {
+const JoinGame = () => {
   return (
     <div>
-      <div>TODO: Add inputs tags and buttons for game creation</div>
+      <div>TODO: Add dropdown to choose game to join</div>
       <Link to='/game/lobby'>Play!</Link>
     </div>
   );
 };
 
-export default CreateGame;
+export default JoinGame;
