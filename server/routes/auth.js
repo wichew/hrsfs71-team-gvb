@@ -31,10 +31,10 @@ router.post('/login', (req, res) => {
     if(!user) {
       res.status(404).send('Username was not found');
     } else {
+      dbUtils.checkUserPassword(username, password, null);
       res.status(200).json(user);
     }
   });
-  // res.send('You sent a post to /db/login!');
 });
 
 
