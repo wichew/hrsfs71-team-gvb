@@ -38,13 +38,13 @@ class Login extends React.Component {
     })
     .catch(function (error) {
       localThis.setState({
-        validationMsg: 'login failed. Please try again or Signup.',
+        validationMsg: 'Login failed. Please try again.',
         validationClass: 'errorMsg'
       });
       console.log(error);
     });
-    this.setState({username: '', password: ''});
   }
+
   render () {
     return (
       <div>
