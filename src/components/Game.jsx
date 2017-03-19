@@ -1,7 +1,6 @@
 import React from 'react';
 import SocketIOClient from 'socket.io-client';
 import Player from './Player.jsx';
-import GameLobby from './GameLobby.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
 const MIN_PLAYERS = 5;
@@ -68,7 +67,12 @@ class Game extends React.Component {
   render() {
     if (this.state.resultsArray.length < MIN_PLAYERS) {
       return (
-        < GameLobby gameState={this.state} />
+        <div>
+          <div>Waiting for all players to join . . .</div>
+          { this.state.resultsArray.map((player, i) => {
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+          })}
+        </div>
       );
     } else {
       return (

@@ -1,13 +1,14 @@
 import React from 'react';
 import Player from './Player.jsx';
 
-class GameLobby extends React.Component {
+/*class GameLobby extends React.Component {
   constructor({gameState}) {
     super({gameState});
     this.state = gameState;
   }
 
   render () {
+    console.log('state in gamelobby: ', this.state.resultsArray);
     return (
       <div>
         <div>Waiting for all players to join . . .</div>
@@ -19,4 +20,4 @@ class GameLobby extends React.Component {
   }  
 }
 
-export default GameLobby;
+export default GameLobby;*/
