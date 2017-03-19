@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div>
       <div><Link to='/creategame'>Create Game</Link></div>
-      <div><Link to='/game/lobby'>Join Game</Link></div>
+      <div><Link to='/game'>Join Game</Link></div>
     </div>
   );
 };

@@ -3,10 +3,11 @@ import SocketIOClient from 'socket.io-client';
 import Player from './Player.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
+const MIN_PLAYERS = 5;
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       resultsArray: [],
       questArray: [],
@@ -64,44 +65,56 @@ class Game extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <p><b>{this.state.playerID}</b></p>
-        <button onClick={() => { this.showID(); }}>show my id</button>
-        <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
-        {this.state.confirmGroupBtn ? <div><button onClick={()=> { this.sendConfirmation(); }}>{'CONFIRM GROUP'}</button></div> : <div></div>}
-        {this.state.voteBoxes ? <div>
-          <button onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); }}>PASS</button>
-          <button onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); }}>FAIL</button>
+    if (this.state.resultsArray.length < MIN_PLAYERS) {
+      // render waiting area (aka game lobby)
+      return (
+        <div className='playerList'>
+          <div className='waitMsg'>Waiting for all players to join . . .</div>
+          { this.state.resultsArray.map((player, i) => {
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+          })}
         </div>
-          : <p>{'wait'}</p>}
-        {this.state.resultsArray.map((userInput) => {
-          return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
-        }
-        )}
-
+      );
+    } else {
+      return (
         <div>
-          <div>
-            <p>vote round</p>
-            {
-              this.state.questArray.map((quest) => {
-                return (<div key={quest.questNum - 1} style={{ backgroundColor: (this.state.coinCounter % this.state.resultsArray.length) === (quest.questNum) ? 'peru' : 'white' }}>{quest.questNum}</div>);
-              })
-            }
+          <p><b>{this.state.playerID}</b></p>
+          <button onClick={() => { this.showID(); }}>show my id</button>
+          <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
+          {this.state.confirmGroupBtn ? <div><button onClick={()=> { this.sendConfirmation(); }}>{'CONFIRM GROUP'}</button></div> : <div></div>}
+          {this.state.voteBoxes ? <div>
+            <button onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); }}>PASS</button>
+            <button onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); }}>FAIL</button>
           </div>
-          <div>
-            <p>score</p>
-            {
-              this.state.questArray.map((quest) => {
-                return (<div key={quest.questNum - 1} style={{ backgroundColor: this.scoreColor(quest.success) }}>{quest.numberOfPlayers}</div>);
-              })
-            }
-          </div>
-          
-        </div>
+            : <p>{'wait'}</p>}
+          {this.state.resultsArray.map((player) => {
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+          }
+          )}
 
-      </div>
-    );
+          <div>
+            <div>
+              <p>vote round</p>
+              {
+                this.state.questArray.map((quest) => {
+                  return (<div key={quest.questNum - 1} style={{ backgroundColor: (this.state.coinCounter % this.state.resultsArray.length) === (quest.questNum) ? 'peru' : 'white' }}>{quest.questNum}</div>);
+                })
+              }
+            </div>
+            <div>
+              <p>score</p>
+              {
+                this.state.questArray.map((quest) => {
+                  return (<div key={quest.questNum - 1} style={{ backgroundColor: this.scoreColor(quest.success) }}>{quest.numberOfPlayers}</div>);
+                })
+              }
+            </div>
+            
+          </div>
+
+        </div>
+      );
+    }
   }
 }
 

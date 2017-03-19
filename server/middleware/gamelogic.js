@@ -40,7 +40,6 @@ module.exports = function (app, express, server) {
 
   ];
 
-
   let scoreCounter = 0;
   let roundCounter = 0;
   let missionCounter = 0;

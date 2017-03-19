@@ -7,3 +7,13 @@
   color: red;
   font-size: small;
 }
+
+.waitMsg {
+  color: orange;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.playerList {
+  margin: 15px;
+}

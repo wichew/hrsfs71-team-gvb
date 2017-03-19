@@ -9,7 +9,7 @@ import JoinGame from './JoinGame.jsx';
 import Game from './Game.jsx';
 
 //hard coded until auth is implemented
-const loggedin = false;
+const loggedin = true;
 const username = 'player1';
 
 const App = () => {
@@ -24,11 +24,11 @@ const App = () => {
         <Route path='/login' component={Login}/>
         <Route path='/signup' component={Signup}/>
         <Route path='/creategame' render={() => <CreateGame user={username}/>}/>
-        <Route path='/game/lobby' render={() => {
-          return (loggedin) ? <GameLobby user={username}/> : <Redirect to='/login'/>;
+        <Route path='/game' render={() => {
+          return (loggedin) ? <Game user={username}/> : <Redirect to='/login'/>;
         }}/>
         <Route path='/game/vote' render={() => <Vote user={username}/>}/>
-      <Game/>
+      {/*<Game/>*/}
       </div>
       
     </Router>
