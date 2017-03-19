@@ -40,7 +40,6 @@ module.exports = function (app, express, server) {
 
   ];
 
-
   let scoreCounter = 0;
   let roundCounter = 0;
   let missionCounter = 0;
@@ -71,10 +70,10 @@ module.exports = function (app, express, server) {
       //if there are 5 players invoke setCoin
       if (userArray.length === 5) {
         cleanPlayers();
-        io.emit('voteBoxes', false);        
+        io.emit('voteBoxes', false);
         io.emit('updateQuest', quest);
-        setCoin();        
-        updateClientArray();        
+        setCoin();
+        updateClientArray();
         console.log('starting game');
       } else {
         console.log('not enought players yet!');
@@ -89,14 +88,15 @@ module.exports = function (app, express, server) {
       coinCounter++;
       io.emit('updateCoinCounter', coinCounter);
       io.emit('updateQuest', quest);
+      io.emit('topMessage', userArray[pickedUser].userID + ' is picking ' + quest[questCounter].numberOfPlayers + ' players to go on the mission');
     };
 
     //picker selects which user to add to the group
     socket.on('selectUser', (picked) => {
-      
+
       userArray.forEach((player) => {
         if (player.userID === picked) {
-       
+
           if (player.selected === false) {
             selectCounter++;
             player.selected = true;
@@ -106,19 +106,31 @@ module.exports = function (app, express, server) {
           }
           updateClientArray();
 
+          displaySelected();
+
           if (selectCounter === quest[questCounter].numberOfPlayers) {
             //send confirm button
             console.log('confirmGroupBtn sent');
             socket.emit('confirmGroupBtn', true);
           } else {
             socket.emit('confirmGroupBtn', false);
-          }       
+          }
         }
       });
 
     });
 
-    socket.on('groupConfirmed', () =>{
+    let displaySelected = () => {
+      let playerList = '';
+      userArray.forEach((player) => {
+        if (player.selected === true) {
+          playerList += player.userID + ' ';
+        }
+      });
+      io.emit('midMessage', playerList);
+    };
+
+    socket.on('groupConfirmed', () => {
       console.log('in groupConfirmed');
       socket.emit('confirmGroupBtn', false);
       startGroupVote();
@@ -149,7 +161,7 @@ module.exports = function (app, express, server) {
     let addToMission = function () {
       missionCounter += 1;
       console.log('Added to missionCounter ', missionCounter);
-      
+
     };
 
     let startGroupVote = () => {
@@ -198,6 +210,7 @@ module.exports = function (app, express, server) {
 
             if (roundCounter === userArray.length) {
               console.log('all are counted');
+              io.emit('resetroundVoteBtn');
               countMajorityVote();
             }
           }
@@ -210,15 +223,15 @@ module.exports = function (app, express, server) {
     updateClientArray();
 
     //counts all mission votes and finds majority
-    let countMissionVotes = () =>{
+    let countMissionVotes = () => {
       console.log('inside countMissionVotes func!');
       var trueCount = 0;
       var falseCount = 0;
-      userArray.forEach(player=>{
+      userArray.forEach(player => {
         if (player.missionVote === true) {
-          trueCount++; 
-        } else if (player.missionVote === false) { 
-          falseCount++; 
+          trueCount++;
+        } else if (player.missionVote === false) {
+          falseCount++;
         }
       });
       if (falseCount > 0) {
@@ -227,7 +240,7 @@ module.exports = function (app, express, server) {
       } else {
         console.log('the mission succeeded!');
         quest[questCounter].success = true;
-        
+
       }
       //you should call this something else
       questCounter++;
@@ -253,13 +266,13 @@ module.exports = function (app, express, server) {
       //if group vote fails
       if (falseCount > trueCount) {
         groupVoteFailed();
-      } else { 
+      } else {
         groupVoteSucceeded();
         //do another vote with only the selected players
         //if that vote fails make a count against them 
         //if that vote succeeds make a green count
       }
-      
+
     };
 
     let groupVoteSucceeded = () => {
