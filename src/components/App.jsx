@@ -9,13 +9,21 @@ import JoinGame from './JoinGame.jsx';
 import Game from './Game.jsx';
 
 //hard coded until auth is implemented
-const loggedin = true;
+let loggedin = true;
 const username = 'player1';
 
 const App = () => {
   return (
     <Router>
       <div>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/signup">Signip</Link></li>
+        </ul>
+
+        <hr/>
+
         {/*<Route exact path='/' render={() => <Home /> } />*/}
         <Route exact path='/' render={() => {
           return loggedin ? <Redirect to='/home' /> : <Redirect to='/login' />;
