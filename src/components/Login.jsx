@@ -3,8 +3,8 @@ import Axios from 'axios';
 import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
-  constructor({pathname}) {
-    super({pathname});
+  constructor(props) {
+    super(props);
     this.state = {
       user: {  
         username: '',
@@ -34,6 +34,7 @@ class Login extends React.Component {
           validationMsg: this.state.user.username + ' has logged in successfully',
           validationClass: 'successMsg'
         });
+        this.props.login();
       }
     })
     .catch(function (error) {
