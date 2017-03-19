@@ -34,7 +34,7 @@ class Login extends React.Component {
           validationMsg: this.state.user.username + ' has logged in successfully',
           validationClass: 'successMsg'
         });
-        this.props.login();
+        this.props.login(this.state.user.username);
       }
     })
     .catch(function (error) {

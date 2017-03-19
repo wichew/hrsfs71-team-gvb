@@ -13,19 +13,19 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: {
-        loggedin: true,
-        username: 'player1'
+        loggedin: false,
+        username: ''
       }
     };
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
   }
 
-  login() {
+  login(userName) {
     this.setState({
       user: {
         loggedin: true,
-        username: 'player1'
+        username: userName
       }
     });
   }
@@ -34,7 +34,7 @@ class App extends React.Component {
     this.setState({
       user: {
         loggedin: false,
-        username: 'player1'
+        username: ''
       }
     });
   }
