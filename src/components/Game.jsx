@@ -66,6 +66,7 @@ class Game extends React.Component {
 
   render() {
     if (this.state.resultsArray.length < MIN_PLAYERS) {
+      // render waiting area (aka game lobby)
       return (
         <div className='playerList'>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
