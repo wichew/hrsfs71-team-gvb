@@ -6,12 +6,12 @@ var socket = SocketIOClient('http://localhost:3000');
 const MIN_PLAYERS = 5;
 
 class Game extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       resultsArray: [],
       questArray: [],
-      playerID: '',
+      playerID: this.props.user,
       picker: '',
       voteBoxes: false,
       confirmGroupBtn: false,
