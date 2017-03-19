@@ -4,7 +4,7 @@ import CreateGame from './CreateGame.jsx';
 import JoinGame from './JoinGame.jsx';
 
 //hard coded until auth is implemented
-const loggedin = false;
+// const loggedin = false;
 
 const Home = () => {
   return (
