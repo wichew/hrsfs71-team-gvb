@@ -28,11 +28,11 @@ router.post('/login', (req, res) => {
   let password = req.body.password;
 
   dbUtils.findUser(username, (user) => {
-    if(!user) {
+    if (!user) {
       res.status(404).send('Username was not found');
     } else {
       dbUtils.checkUserPassword(username, password, null);
-      res.status(200).json(user);
+      res.status(200).send('User login successful');
     }
   });
 });
