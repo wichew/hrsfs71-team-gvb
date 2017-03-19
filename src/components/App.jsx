@@ -28,7 +28,7 @@ const App = () => {
           return (loggedin) ? <Game user={username}/> : <Redirect to='/login'/>;
         }}/>
         <Route path='/game/vote' render={() => <Vote user={username}/>}/>
-      {/*<Game/>*/}
+      <Game/>
       </div>
       
     </Router>
