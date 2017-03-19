@@ -13,19 +13,19 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: {
-        loggedin: true,
-        username: 'player1'
+        loggedin: false,
+        username: ''
       }
     };
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
   }
 
-  login() {
+  login(userName) {
     this.setState({
       user: {
         loggedin: true,
-        username: 'player1'
+        username: userName
       }
     });
   }
@@ -34,7 +34,7 @@ class App extends React.Component {
     this.setState({
       user: {
         loggedin: false,
-        username: 'player1'
+        username: ''
       }
     });
   }
@@ -62,7 +62,7 @@ class App extends React.Component {
           <Route path='/signup' component={Signup}/>
           <Route path='/creategame' render={() => <CreateGame user={this.state.user}/>} />
           <Route path='/game' render={() => {
-            return (this.state.user.loggedin) ? <Game user={this.state.user.username}/> : <Redirect to='/login'/>;
+            return (this.state.user.loggedin) ? <Game user={this.state.user.username} /> : <Redirect to='/login'/>;
           }}/>
           <Route path='/game/vote' render={() => <Vote user={this.state.user.username}/>}/>
         {/*<Game/>*/}
