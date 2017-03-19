@@ -5,7 +5,7 @@ const CreateGame = () => {
   return (
     <div>
       <div>TODO: Add inputs tags and buttons for game creation</div>
-      <Link to='/game/lobby'>Play!</Link>
+      <Link to='/game'>Play!</Link>
     </div>
   );
 };

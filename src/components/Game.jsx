@@ -6,8 +6,8 @@ var socket = SocketIOClient('http://localhost:3000');
 const MIN_PLAYERS = 5;
 
 class Game extends React.Component {
-  constructor({socket}) {
-    super({socket});
+  constructor() {
+    super();
     this.state = {
       resultsArray: [],
       questArray: [],
@@ -86,8 +86,8 @@ class Game extends React.Component {
             <button onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); }}>FAIL</button>
           </div>
             : <p>{'wait'}</p>}
-          {this.state.resultsArray.map((userInput) => {
-            return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
+          {this.state.resultsArray.map((player) => {
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
           }
           )}
 
