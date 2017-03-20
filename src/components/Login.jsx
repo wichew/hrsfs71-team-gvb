@@ -1,6 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class Login extends React.Component {
         </div>
         <div>
           <p className={this.state.validationClass}>{this.state.validationMsg}</p>
-          <button onClick={this.submit}>Login</button>
+          <button onClick={this.submit} >Login</button>
           <Link to='/signup'>Go to Sign-up</Link>
         </div>
       </div>

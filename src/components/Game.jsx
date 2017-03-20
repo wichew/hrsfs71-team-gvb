@@ -26,8 +26,13 @@ class Game extends React.Component {
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
+<<<<<<< HEAD
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests[this.props.numberOfPlayers-5] }); console.log('updated questArray' + this.state.questArray) });
     socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
+=======
+    socket.on('updateQuest', (quest) => { this.setState({ questArray: quest});}) 
+    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
+>>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });

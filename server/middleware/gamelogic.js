@@ -3,6 +3,7 @@
 const express = require('express');
 const socket = require('socket.io');
 
+
 module.exports = function (app, express, server) {
 
   // let server = require('http').createServer(app);
@@ -214,9 +215,14 @@ module.exports = function (app, express, server) {
         if (player.userID === userObj.playerID) {
           player.name = userObj.username;
         }
+<<<<<<< HEAD
       });
       updateClientArray();
       });
+=======
+      }
+      );
+>>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
     });
 
     //update the amount of players in the game
@@ -233,7 +239,7 @@ module.exports = function (app, express, server) {
       if (userArray.length === numberOfPlayersForTheGame) {
         cleanPlayers();
         io.emit('voteBoxes', false);        
-        io.emit('updateQuest', quest[numberOfPlayersForTheGame]);
+        io.emit('updateQuest', quest[numberOfPlayersForTheGame-5]);
         setCoin();        
         updateClientArray();        
         console.log('starting game');
@@ -249,8 +255,8 @@ module.exports = function (app, express, server) {
       io.emit('setPicker', ({ picker: userArray[pickedUser].userID }));
       coinCounter++;
       io.emit('updateCoinCounter', coinCounter);
-      io.emit('updateQuest', quest);
-      io.emit('topMessage', userArray[pickedUser].userID + ' is picking ' + quest[questCounter].numberOfPlayers + ' players to go on the mission');
+      io.emit('updateQuest', quest[numberOfPlayersForTheGame-5]);
+      io.emit('topMessage', userArray[pickedUser].userID + ' is picking ' + quest[numberOfPlayersForTheGame-5][questCounter].numberOfPlayers + ' players to go on the mission');
     };
 
     //picker selects which user to add to the group
@@ -270,7 +276,7 @@ module.exports = function (app, express, server) {
 
           displaySelected();
 
-          if (selectCounter === quest[questCounter].numberOfPlayers) {
+          if (selectCounter === quest[numberOfPlayersForTheGame-5][questCounter].numberOfPlayers) {
             //send confirm button
             socket.emit('confirmGroupBtn', true);
           } else {
@@ -349,7 +355,7 @@ module.exports = function (app, express, server) {
               player.missionVote = false;
             }
             updateClientArray();
-            if (missionCounter === quest[questCounter].numberOfPlayers) {
+            if (missionCounter === quest[numberOfPlayersForTheGame-5][questCounter].numberOfPlayers) {
               console.log('all are counted');
               countMissionVotes();
             }
@@ -398,11 +404,16 @@ module.exports = function (app, express, server) {
       });
       if (falseCount > 0) {
         console.log('the mission failed!');
-        quest[questCounter].success = false;
+        quest[numberOfPlayersForTheGame-5][questCounter].success = false;
       } else {
         console.log('the mission succeeded!');
+<<<<<<< HEAD
         quest[questCounter].success = true;
         
+=======
+        quest[numberOfPlayersForTheGame-5][questCounter].success = true;
+
+>>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
       }
       //you should call this something else
       questCounter++;

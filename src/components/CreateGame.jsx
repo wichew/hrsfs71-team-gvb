@@ -15,7 +15,7 @@ class CreateGame extends React.Component {
         <button onClick = {this.props.decrementNumberOfPlayers}> - </button>{this.props.numberOfPlayers}<button onClick = {this.props.incrementNumberOfPlayers}> + </button>
         </div>
 
-        <Link to='/game' user>Play!</Link>
+        <Link to='/game' >Play!</Link>
       </div>
     );
   }
