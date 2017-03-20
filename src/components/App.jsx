@@ -62,11 +62,12 @@ class App extends React.Component {
           <Route path='/signup' component={Signup}/>
           <Route path='/creategame' render={() => <CreateGame user={this.state.user}/>} />
           <Route path='/game' render={() => {
-            return (this.state.user.loggedin) ? <Game user={this.state.user.username} /> : <Redirect to='/login'/>;
+            return (this.state.user.loggedin) ? <Game username={this.state.user.username} /> : <Redirect to='/login'/>;
           }}/>
-          <Route path='/game/vote' render={() => <Vote user={this.state.user.username}/>}/>
-          {/*<p>{this.state.user.username}</p>*/}
-        {/*<Game username={this.state.user.username}/>*/}
+          <Route path='/game/vote' render={() => <Vote username={this.state.user.username}/>}/>
+          
+          {/*<Game username={this.state.user.username}/>*/}
+
         </div>
         
       </Router>
