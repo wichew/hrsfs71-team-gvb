@@ -35,6 +35,7 @@ class Game extends React.Component {
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
     socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); });
+    socket.on('groupVoteBtns', ()=>{ this.setState({groupVotePassBtn: false, groupVoteFailBtn: false}); });
     
     
     this.roundVote = this.roundVote.bind(this);
