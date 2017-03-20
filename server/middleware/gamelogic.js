@@ -74,9 +74,9 @@ module.exports = function (app, express, server) {
         }
       }      
     );
-    updateClientArray();
+      updateClientArray();
       // console.log(userArray);
-  });
+    });
 
 
     //getPlayerAmount
@@ -286,9 +286,6 @@ module.exports = function (app, express, server) {
         groupVoteFailed();
       } else {
         groupVoteSucceeded();
-        //do another vote with only the selected players
-        //if that vote fails make a count against them 
-        //if that vote succeeds make a green count
       }
     };
 
@@ -297,7 +294,11 @@ module.exports = function (app, express, server) {
       updateClientArray();
       io.emit('topMessage', 'Vote Success');
       io.emit('midMessage', '');
-      setTimeout(()=>{ io.emit('groupVoteBtns'); missionVote(); io.emit('showVotes', false); }, 8000);
+      setTimeout(()=>{ 
+        io.emit('groupVoteBtns'); 
+        missionVote(); 
+        io.emit('showVotes', false); 
+      }, 8000);
     };
 
     let groupVoteFailed = () => {
