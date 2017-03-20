@@ -11,7 +11,8 @@ class Game extends React.Component {
     this.state = {
       resultsArray: [],
       questArray: [],
-      playerID: this.props.user,
+      playerID: '',
+      username: this.props.username,
       picker: '',
       voteBoxes: false,
       confirmGroupBtn: false,
@@ -20,7 +21,7 @@ class Game extends React.Component {
       midMessage: ' ',
       roundVoteBtn: null
     };
-    socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); });
+    socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests }); });
     socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
@@ -31,18 +32,19 @@ class Game extends React.Component {
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
-
+    
+    
+    
     this.roundVote = this.roundVote.bind(this);
     this.isPicker = this.isPicker.bind(this);
     this.sendConfirmation = this.sendConfirmation.bind(this);
   }
-
   roundVote(voteObj) {
     console.log('in the roundVote on client', voteObj.user + ' ' + voteObj.vote);
     this.setState({
       roundVoteBtn: voteObj.vote
     });
-    socket.emit('roundVote', (voteObj));
+    socket.emit('roundVote', voteObj);
   }
 
   showID() {
@@ -95,6 +97,7 @@ class Game extends React.Component {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
+         <p>{this.state.username}</p>
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
