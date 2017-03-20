@@ -98,7 +98,7 @@ class Game extends React.Component {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
-         <p>{this.state.username}</p>
+          <p>Hi, {this.state.username}</p>
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
