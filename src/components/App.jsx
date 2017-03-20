@@ -13,19 +13,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: {
-<<<<<<< HEAD
-        loggedin: true,
+        loggedin: false,
         username: 'Bob'
       },
       numberOfPlayers: 5
-      }
-=======
-        loggedin: false,
-        username: 'Bob',
-        numberOfPlayers: 5
-      }
-    };
->>>>>>> merged again
+    }
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
     this.decrementNumberOfPlayers = this.decrementNumberOfPlayers.bind(this);
