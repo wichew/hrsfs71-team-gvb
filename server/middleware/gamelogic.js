@@ -65,6 +65,20 @@ module.exports = function (app, express, server) {
     //send each client an id
     socket.emit('setPlayerID', socket.client.id);
 
+    //setUsername
+    socket.on('updateUsername', (userObj)=>{
+      console.log('helllooo there!!!', userObj);
+      userArray.forEach((player) => {
+        if (player.userID === userObj.playerID) {
+          player.name = userObj.username;
+        }
+        
+      }      
+    );
+      console.log(userArray);
+    });
+
+
     //getPlayerAmount
     socket.on('gameStart', () => {
       //if there are 5 players invoke setCoin
