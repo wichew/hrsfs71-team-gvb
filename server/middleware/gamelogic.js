@@ -185,8 +185,8 @@ module.exports = function (app, express, server) {
     };
 
     //sets player vote to pass or fail
-    socket.on('roundVote', (voteObj) => {
-
+    socket.on('roundVote', (voteObj) => {          
+      
       userArray.forEach((player) => {
         if (player.userID === voteObj.user) {
 
@@ -254,7 +254,7 @@ module.exports = function (app, express, server) {
       } else {
         console.log('the mission succeeded!');
         quest[questCounter].success = true;
-
+        
       }
       //you should call this something else
       questCounter++;
@@ -297,7 +297,7 @@ module.exports = function (app, express, server) {
       updateClientArray();
       io.emit('topMessage', 'Vote Success');
       io.emit('midMessage', '');
-      setTimeout(()=>{ missionVote(); io.emit('showVotes', false); }, 8000);
+      setTimeout(()=>{ io.emit('groupVoteBtns'); missionVote(); io.emit('showVotes', false); }, 8000);
     };
 
     let groupVoteFailed = () => {
@@ -317,11 +317,12 @@ module.exports = function (app, express, server) {
       
       setTimeout(()=>{
         cleanPlayers();
+        io.emit('groupVoteBtns');
         setCoin();
         io.emit('showVotes', false);
         updateClientArray();        
       }, 8000);
-    
+      
     };
 
     let missionVote = () => {
