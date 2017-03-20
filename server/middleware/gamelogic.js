@@ -214,10 +214,9 @@ module.exports = function (app, express, server) {
         if (player.userID === userObj.playerID) {
           player.name = userObj.username;
         }
-      }      
-    );
+      });
       updateClientArray();
-      // console.log(userArray);
+      });
     });
 
     //update the amount of players in the game
@@ -443,11 +442,15 @@ module.exports = function (app, express, server) {
       updateClientArray();
       io.emit('topMessage', 'Vote Success');
       io.emit('midMessage', '');
+<<<<<<< HEAD
       setTimeout(()=>{ 
         io.emit('groupVoteBtns'); 
         missionVote(); 
         io.emit('showVotes', false); 
       }, 8000);
+=======
+      setTimeout(()=>{ missionVote(); io.emit('showVotes', false); }, 8000);
+>>>>>>> Adding create game and multiple game size features
     };
 
     let groupVoteFailed = () => {
@@ -467,12 +470,19 @@ module.exports = function (app, express, server) {
       
       setTimeout(()=>{
         cleanPlayers();
+<<<<<<< HEAD
         io.emit('groupVoteBtns');
+=======
+>>>>>>> Adding create game and multiple game size features
         setCoin();
         io.emit('showVotes', false);
         updateClientArray();        
       }, 8000);
+<<<<<<< HEAD
       
+=======
+    
+>>>>>>> Adding create game and multiple game size features
     };
 
     let missionVote = () => {
