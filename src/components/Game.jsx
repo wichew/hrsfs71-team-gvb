@@ -100,9 +100,8 @@ class Game extends React.Component {
       return (
         <div className='playerList'>
           <p>Hi, {this.state.username}!</p>
-          <div className='waitMsg'>Waiting for all players to join . . .</div>
           <div>Game of {this.state.numberOfPlayers}</div>
-          <div className='waitMsg'>Waiting for all players to join . .. {this.state.username}</div>
+          <div className='waitMsg'>Waiting for all players to join . . .</div>
           { this.state.resultsArray.map((player, i) => {
             return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
           })}

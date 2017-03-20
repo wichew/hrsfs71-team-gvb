@@ -6,7 +6,7 @@ import JoinGame from './JoinGame.jsx';
 const Home = () => {
   return (
     <div>
-      {/*<div><Link to='/creategame'>Create Game</Link></div>*/}
+      <div><Link to='/creategame'>Create Game</Link></div>
       <div><Link to='/game'>Join Game</Link></div>
     </div>
   );

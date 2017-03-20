@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const socket = require('socket.io');
 
@@ -189,6 +187,7 @@ module.exports = function (app, express, server) {
   let questCounter = 0;
 
   io.on('connection', (socket) => {
+  
     console.log('a user connected');
     //creates user item and puts it in the array
     userArray.push({
@@ -217,7 +216,6 @@ module.exports = function (app, express, server) {
         }
       });
       updateClientArray();
-      });
     });
 
     //update the amount of players in the game
@@ -226,7 +224,7 @@ module.exports = function (app, express, server) {
       numberOfPlayersForTheGame = newNumberOfPlayers;
       }
       io.emit('updatePlayerAmount',numberOfPlayersForTheGame)
-    })
+    });
 
     //getPlayerAmount
     socket.on('gameStart', () => {
@@ -256,10 +254,8 @@ module.exports = function (app, express, server) {
 
     //picker selects which user to add to the group
     socket.on('selectUser', (picked) => {
-
       userArray.forEach((player) => {
         if (player.userID === picked) {
-
           if (player.selected === false) {
             selectCounter++;
             player.selected = true;
@@ -268,9 +264,7 @@ module.exports = function (app, express, server) {
             player.selected = false;
           }
           updateClientArray();
-
           displaySelected();
-
           if (selectCounter === quest[numberOfPlayersForTheGame-5][questCounter].numberOfPlayers) {
             //send confirm button
             socket.emit('confirmGroupBtn', true);
@@ -279,7 +273,6 @@ module.exports = function (app, express, server) {
           }
         }
       });
-
     });
 
     let displaySelected = () => {
@@ -324,7 +317,6 @@ module.exports = function (app, express, server) {
     let addToMission = function () {
       missionCounter += 1;
       console.log('Added to missionCounter ', missionCounter);
-
     };
 
     let startGroupVote = () => {
@@ -334,11 +326,9 @@ module.exports = function (app, express, server) {
     };
 
     //sets player vote to pass or fail
-    socket.on('roundVote', (voteObj) => {          
-      
+    socket.on('roundVote', (voteObj) => {        
       userArray.forEach((player) => {
         if (player.userID === voteObj.user) {
-
           //if on mission vote
           if (player.inMission === true) {
             if (player.missionVote === null) {
@@ -354,9 +344,7 @@ module.exports = function (app, express, server) {
               console.log('all are counted');
               countMissionVotes();
             }
-
           } else {
-
             //keeps track of how many players have voted
             if (player.roundVote === null) {
               addToCounter();
@@ -368,9 +356,7 @@ module.exports = function (app, express, server) {
             } else {
               player.roundVote = false;
             }
-
             updateClientArray();
-
             if (roundCounter === userArray.length) {
               console.log('all are counted');
               io.emit('resetroundVoteBtn');
@@ -378,7 +364,6 @@ module.exports = function (app, express, server) {
             }
           }
         }
-
       });
     });
 
@@ -421,14 +406,11 @@ module.exports = function (app, express, server) {
           falseCount++;
         }
       }
-
       //show who voted what
       updateClientArray();
       io.emit('showVotes', true);
-
       console.log('false ' + falseCount + ', true ' + trueCount);
-      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');
-
+      console.log(trueCount > falseCount ? 'vote passes' : 'vote fails')
       //if group vote fails
       if (falseCount > trueCount) {
         groupVoteFailed();
@@ -451,19 +433,14 @@ module.exports = function (app, express, server) {
 
     let groupVoteFailed = () => {
       //we want to clean the players
-   
-      
       io.emit('setPicker', '');
       io.emit('voteBoxes', false);
       selectCounter = 0;
       roundCounter = 0;
       missionCounter = 0;
-
-      
       io.emit('topMessage', 'Vote Failed');
       io.emit('midMessage', '');      
       updateClientArray();
-      
       setTimeout(()=>{
         cleanPlayers();
         io.emit('groupVoteBtns');
@@ -495,4 +472,5 @@ module.exports = function (app, express, server) {
       updateClientArray();
       console.log('user disconnected');
     });
+  })
 };
