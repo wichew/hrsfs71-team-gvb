@@ -1,4 +1,4 @@
-# hrsfs71-team-gvb
+3 hrsfs71-team-gvb
 # GvB
 Good must triumph. The missions must succeed. By completing missions, Good will become one step closer to success yet Bad has cursed some of the good, ready for sabotage. Good must unmask them in five missions. We are Good!
 
@@ -33,8 +33,17 @@ Players are either Good or Bad. For three to five rounds, they must depend on ea
 - Node 0.10.x
 - Redis 2.6.x
 - Postgresql 9.1.x
-- etc
-- etc
+- Axios: 0.15.3
+- Body-parser: ^1.17.1,
+- Express: ^4.15.2
+- Mongoose: ^4.8.6
+- Morgan: ^1.8.1
+- Nodemon: ^1.11.0
+- React: ^15.4.2
+- React-dom: ^15.4.2
+- React-router-dom: ^4.0.0
+- Socket.io: ^1.7.3
+- Socket.io-client: ^1.7.3
 
 ## Development
 
@@ -42,10 +51,11 @@ Players are either Good or Bad. For three to five rounds, they must depend on ea
 
 From within the root directory:
 
-```sh
-sudo npm install -g bower
+```
 npm install
-bower install
+npm run build
+npm start
+
 ```
 
 ### Roadmap
