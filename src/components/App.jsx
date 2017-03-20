@@ -17,11 +17,7 @@ class App extends React.Component {
         username: 'Bob'
       },
       numberOfPlayers: 5
-<<<<<<< HEAD
     }
-=======
-    };
->>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
     this.decrementNumberOfPlayers = this.decrementNumberOfPlayers.bind(this);
@@ -94,10 +90,6 @@ class App extends React.Component {
               return <Login login={this.login}/>}
             }
           } />
-<<<<<<< HEAD
-=======
-            
->>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
           <Route path='/signup' component={Signup}/>
           <Route path='/creategame' render={() => <CreateGame user={this.state.user} decrementNumberOfPlayers = {this.decrementNumberOfPlayers} incrementNumberOfPlayers = {this.incrementNumberOfPlayers}
           numberOfPlayers = {this.state.numberOfPlayers}/>} />

@@ -26,13 +26,8 @@ class Game extends React.Component {
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
-<<<<<<< HEAD
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests[this.props.numberOfPlayers-5] }); console.log('updated questArray' + this.state.questArray) });
     socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
-=======
-    socket.on('updateQuest', (quest) => { this.setState({ questArray: quest});}) 
-    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
->>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });
@@ -45,13 +40,8 @@ class Game extends React.Component {
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
-<<<<<<< HEAD
     socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); console.log('show votes', bool); });
-    socket.on('groupVoteBtns', ()=>{ this.setState({groupVotePassBtn: false, groupVoteFailBtn: false}); });
-=======
-    socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); });
->>>>>>> Adding create game and multiple game size features
-    
+    socket.on('groupVoteBtns', ()=>{ this.setState({groupVotePassBtn: false, groupVoteFailBtn: false}); });    
     this.roundVote = this.roundVote.bind(this);
     this.isPicker = this.isPicker.bind(this);
     this.sendConfirmation = this.sendConfirmation.bind(this);
@@ -112,15 +102,9 @@ class Game extends React.Component {
           <p>Hi, {this.state.username}!</p>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
           <div>Game of {this.state.numberOfPlayers}</div>
-<<<<<<< HEAD
           <div className='waitMsg'>Waiting for all players to join . .. {this.state.username}</div>
           { this.state.resultsArray.map((player, i) => {
             return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
-=======
-          <div className='waitMsg'>Waiting for all players to join . .. {this.props.user}</div>
-          {this.state.resultsArray.map((player, i) => {
-            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} showVote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
->>>>>>> Adding create game and multiple game size features
           })}
         </div>
       );
@@ -162,11 +146,7 @@ class Game extends React.Component {
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
-<<<<<<< HEAD
               return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={userInput.roundVote} showVotes={this.state.showVotes} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
-=======
-              return <Player selected={userInput.selected} isPicker={this.isPicker} showVotes={this.state.showVotes} roundVote={userInput.roundVote} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
->>>>>>> Adding create game and multiple game size features
             }
             )}
 

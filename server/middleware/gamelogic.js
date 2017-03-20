@@ -215,14 +215,9 @@ module.exports = function (app, express, server) {
         if (player.userID === userObj.playerID) {
           player.name = userObj.username;
         }
-<<<<<<< HEAD
       });
       updateClientArray();
       });
-=======
-      }
-      );
->>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
     });
 
     //update the amount of players in the game
@@ -407,13 +402,7 @@ module.exports = function (app, express, server) {
         quest[numberOfPlayersForTheGame-5][questCounter].success = false;
       } else {
         console.log('the mission succeeded!');
-<<<<<<< HEAD
-        quest[questCounter].success = true;
-        
-=======
         quest[numberOfPlayersForTheGame-5][questCounter].success = true;
-
->>>>>>> Functionality Implementation of multiple players (5-10) and Successful login redirects to Home
       }
       //you should call this something else
       questCounter++;
@@ -453,15 +442,11 @@ module.exports = function (app, express, server) {
       updateClientArray();
       io.emit('topMessage', 'Vote Success');
       io.emit('midMessage', '');
-<<<<<<< HEAD
       setTimeout(()=>{ 
         io.emit('groupVoteBtns'); 
         missionVote(); 
         io.emit('showVotes', false); 
       }, 8000);
-=======
-      setTimeout(()=>{ missionVote(); io.emit('showVotes', false); }, 8000);
->>>>>>> Adding create game and multiple game size features
     };
 
     let groupVoteFailed = () => {
@@ -481,19 +466,11 @@ module.exports = function (app, express, server) {
       
       setTimeout(()=>{
         cleanPlayers();
-<<<<<<< HEAD
         io.emit('groupVoteBtns');
-=======
->>>>>>> Adding create game and multiple game size features
         setCoin();
         io.emit('showVotes', false);
         updateClientArray();        
       }, 8000);
-<<<<<<< HEAD
-      
-=======
-    
->>>>>>> Adding create game and multiple game size features
     };
 
     let missionVote = () => {
@@ -518,5 +495,4 @@ module.exports = function (app, express, server) {
       updateClientArray();
       console.log('user disconnected');
     });
-  });
 };
