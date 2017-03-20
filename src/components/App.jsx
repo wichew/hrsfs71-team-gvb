@@ -15,10 +15,13 @@ class App extends React.Component {
       user: {
         loggedin: true,
         username: 'Bob'
+      },
+      numberOfPlayers: 5
       }
-    };
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.decrementNumberOfPlayers = this.decrementNumberOfPlayers.bind(this);
+    this.incrementNumberOfPlayers = this.incrementNumberOfPlayers.bind(this);
   }
 
   login(userName) {
@@ -37,6 +40,28 @@ class App extends React.Component {
         username: ''
       }
     });
+  }
+
+  decrementNumberOfPlayers() {
+    if(this.state.numberOfPlayers >5){
+      let decNoP = this.state.numberOfPlayers-1
+      this.setState ({
+         numberOfPlayers: decNoP
+      })
+    } else {
+      console.log('Minimum Amount of Players is 5')
+    }
+  }
+
+  incrementNumberOfPlayers () {
+    if(this.state.numberOfPlayers < 10) {
+      let incNoP = this.state.numberOfPlayers+1
+      this.setState({
+        numberOfPlayers: incNoP
+      })
+    } else {
+      console.log('Maximum Amount of Players is 10')
+    }
   }
 
   render() {
@@ -60,9 +85,14 @@ class App extends React.Component {
           <Route path='/home' component={Home}/>
           <Route path='/login' render={() => <Login login={this.login}/>} />
           <Route path='/signup' component={Signup}/>
-          <Route path='/creategame' render={() => <CreateGame user={this.state.user}/>} />
+          <Route path='/creategame' render={() => <CreateGame user={this.state.user} decrementNumberOfPlayers = {this.decrementNumberOfPlayers} incrementNumberOfPlayers = {this.incrementNumberOfPlayers}
+          numberOfPlayers = {this.state.numberOfPlayers}/>} />
           <Route path='/game' render={() => {
+<<<<<<< HEAD
             return (this.state.user.loggedin) ? <Game username={this.state.user.username} /> : <Redirect to='/login'/>;
+=======
+            return (this.state.user.loggedin) ? <Game user={this.state.user.username} numberOfPlayers ={this.state.numberOfPlayers}/> : <Redirect to='/login'/>;
+>>>>>>> Add more game arrays into gamelogic.js and implemented create game feature.
           }}/>
           <Route path='/game/vote' render={() => <Vote user={this.state.user.username}/>}/>          
         <Game username={this.state.user.username}/>

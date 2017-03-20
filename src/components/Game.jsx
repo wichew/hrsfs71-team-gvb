@@ -3,7 +3,6 @@ import SocketIOClient from 'socket.io-client';
 import Player from './Player.jsx';
 
 var socket = SocketIOClient('http://localhost:3000');
-const MIN_PLAYERS = 5;
 
 class Game extends React.Component {
   constructor(props) {
@@ -21,22 +20,27 @@ class Game extends React.Component {
       midMessage: ' ',
       groupVotePassBtn: false,
       groupVoteFailBtn: false,
-      showVotes: false
+      showVotes: false,
+      numberOfPlayers: null
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
-    socket.on('updateQuest', (quests) => { this.setState({ questArray: quests }); });
+    socket.on('updateQuest', (quests) => { this.setState({ questArray: quests[this.props.numberOfPlayers-5] }); console.log('updated questArray' + this.state.questArray) });
     socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });
     socket.on('error', (errorMsg) => { console.log(errorMsg); });
+    socket.on('updatePlayerAmount', (newAmount)=>{
+      this.setState({
+        numberOfPlayers: newAmount
+      })
+    });
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
     socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); console.log('show votes', bool); });
     socket.on('groupVoteBtns', ()=>{ this.setState({groupVotePassBtn: false, groupVoteFailBtn: false}); });
-    
     
     this.roundVote = this.roundVote.bind(this);
     this.isPicker = this.isPicker.bind(this);
@@ -85,15 +89,22 @@ class Game extends React.Component {
     }
   }
 
+  componentDidMount() {
+    console.log('New socket mount', this.props)
+    socket.emit('updatePlayerAmount', this.props.numberOfPlayers)
+  }
+
   render() {
-    if (this.state.resultsArray.length < MIN_PLAYERS) {
+    if (this.state.resultsArray.length < this.state.numberOfPlayers) {
       // render waiting area (aka game lobby)
       return (
         <div className='playerList'>
           <p>Hi, {this.state.username}!</p>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
-          {this.state.resultsArray.map((player, i) => {
-            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} showVote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+          <div>Game of {this.state.numberOfPlayers}</div>
+          <div className='waitMsg'>Waiting for all players to join . .. {this.state.username}</div>
+          { this.state.resultsArray.map((player, i) => {
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
           })}
         </div>
       );

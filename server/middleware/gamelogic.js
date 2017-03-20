@@ -9,9 +9,10 @@ module.exports = function (app, express, server) {
   let io = require('socket.io')(server);
 
   let userArray = [];
+  let numberOfPlayersForTheGame = null;
 
   //create quest obj
-  let quest = [
+  let quest = [[
     {
       questNum: 1,
       numberOfPlayers: 2,
@@ -37,7 +38,146 @@ module.exports = function (app, express, server) {
       numberOfPlayers: 3,
       success: null,
     },
-
+  ],
+  [
+    {
+      questNum: 1,
+      numberOfPlayers: 2,
+      success: null,
+    },
+    {
+      questNum: 2,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 3,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 4,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 5,
+      numberOfPlayers: 4,
+      success: null,
+    },
+  ],
+  [
+    {
+      questNum: 1,
+      numberOfPlayers: 2,
+      success: null,
+    },
+    {
+      questNum: 2,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 3,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 4,
+      numberOfPlayers: 4,
+      needTwoToFail: true,
+      success: null,
+    },
+    {
+      questNum: 5,
+      numberOfPlayers: 4,
+      success: null,
+    },
+  ],
+  [
+    {
+      questNum: 1,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 2,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 3,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 4,
+      numberOfPlayers: 5,
+      needTwoToFail: true,
+      success: null,
+    },
+    {
+      questNum: 5,
+      numberOfPlayers: 5,
+      success: null,
+    },
+  ],
+    [
+    {
+      questNum: 1,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 2,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 3,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 4,
+      numberOfPlayers: 5,
+      needTwoToFail: true,
+      success: null,
+    },
+    {
+      questNum: 5,
+      numberOfPlayers: 5,
+      success: null,
+    },
+  ],
+    [
+    {
+      questNum: 1,
+      numberOfPlayers: 3,
+      success: null,
+    },
+    {
+      questNum: 2,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 3,
+      numberOfPlayers: 4,
+      success: null,
+    },
+    {
+      questNum: 4,
+      numberOfPlayers: 5,
+      needTwoToFail: true,
+      success: null,
+    },
+    {
+      questNum: 5,
+      numberOfPlayers: 5,
+      success: null,
+    },
+  ]
   ];
 
   let scoreCounter = 0;
@@ -64,6 +204,8 @@ module.exports = function (app, express, server) {
 
     //send each client an id
     socket.emit('setPlayerID', socket.client.id);
+    socket.emit('updatePlayerAmount', (numberOfPlayersForTheGame));
+
 
     //setUsername
     socket.on('updateUsername', (userObj) => {
@@ -78,16 +220,23 @@ module.exports = function (app, express, server) {
       // console.log(userArray);
     });
 
+    //update the amount of players in the game
+    socket.on('updatePlayerAmount', (newNumberOfPlayers) => {
+      if(numberOfPlayersForTheGame === null) {
+      numberOfPlayersForTheGame = newNumberOfPlayers;
+      }
+      io.emit('updatePlayerAmount',numberOfPlayersForTheGame)
+    })
 
     //getPlayerAmount
     socket.on('gameStart', () => {
-      //if there are 5 players invoke setCoin
-      if (userArray.length === 5) {
+      //if there are the right amount of players invoke setCoin
+      if (userArray.length === numberOfPlayersForTheGame) {
         cleanPlayers();
-        io.emit('voteBoxes', false);
-        io.emit('updateQuest', quest);
-        setCoin();
-        updateClientArray();
+        io.emit('voteBoxes', false);        
+        io.emit('updateQuest', quest[numberOfPlayersForTheGame]);
+        setCoin();        
+        updateClientArray();        
         console.log('starting game');
       } else {
         console.log('not enought players yet!');
