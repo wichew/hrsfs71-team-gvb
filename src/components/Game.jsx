@@ -19,12 +19,13 @@ class Game extends React.Component {
       coinCounter: null,
       topMessage: ' ',
       midMessage: ' ',
-      roundVoteBtn: null
+      roundVoteBtn: false,
+      showVotes: false
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests }); });
-    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
+    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });
@@ -32,7 +33,7 @@ class Game extends React.Component {
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
-    
+    socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); });
     
     
     this.roundVote = this.roundVote.bind(this);
@@ -89,15 +90,13 @@ class Game extends React.Component {
         <div className='playerList'>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
           {this.state.resultsArray.map((player, i) => {
-            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} showVote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
           })}
         </div>
       );
     } else {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-
-         <p>{this.state.username}</p>
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
@@ -133,7 +132,7 @@ class Game extends React.Component {
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
-              return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
+              return <Player selected={userInput.selected} isPicker={this.isPicker} showVotes={this.state.showVotes} roundVote={userInput.roundVote} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
             }
             )}
 
