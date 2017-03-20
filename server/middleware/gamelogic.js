@@ -66,7 +66,7 @@ module.exports = function (app, express, server) {
     socket.emit('setPlayerID', socket.client.id);
 
     //setUsername
-    socket.on('updateUsername', (userObj)=>{
+    socket.on('updateUsername', (userObj) => {
       console.log('helllooo there!!!', userObj);
       userArray.forEach((player) => {
         if (player.userID === userObj.playerID) {
@@ -76,7 +76,7 @@ module.exports = function (app, express, server) {
     );
     updateClientArray();
       // console.log(userArray);
-    });
+  });
 
 
     //getPlayerAmount
@@ -124,7 +124,6 @@ module.exports = function (app, express, server) {
 
           if (selectCounter === quest[questCounter].numberOfPlayers) {
             //send confirm button
-            console.log('confirmGroupBtn sent');
             socket.emit('confirmGroupBtn', true);
           } else {
             socket.emit('confirmGroupBtn', false);
@@ -147,6 +146,7 @@ module.exports = function (app, express, server) {
     socket.on('groupConfirmed', () => {
       console.log('in groupConfirmed');
       socket.emit('confirmGroupBtn', false);
+      io.emit('setPicker', '');
       startGroupVote();
     });
 
@@ -274,6 +274,10 @@ module.exports = function (app, express, server) {
         }
       }
 
+      //show who voted what
+      updateClientArray();
+      io.emit('showVotes', true);
+
       console.log('false ' + falseCount + ', true ' + trueCount);
       console.log(trueCount > falseCount ? 'vote passes' : 'vote fails');
 
@@ -286,14 +290,39 @@ module.exports = function (app, express, server) {
         //if that vote fails make a count against them 
         //if that vote succeeds make a green count
       }
-
     };
 
     let groupVoteSucceeded = () => {
       io.emit('voteBoxes', false);
-      missionVote();
+      updateClientArray();
+      io.emit('topMessage', 'Vote Success');
+      io.emit('midMessage', '');
+      setTimeout(()=>{ missionVote(); io.emit('showVotes', false); }, 8000);
     };
 
+    let groupVoteFailed = () => {
+      //we want to clean the players
+   
+      
+      io.emit('setPicker', '');
+      io.emit('voteBoxes', false);
+      selectCounter = 0;
+      roundCounter = 0;
+      missionCounter = 0;
+
+      
+      io.emit('topMessage', 'Vote Failed');
+      io.emit('midMessage', '');      
+      updateClientArray();
+      
+      setTimeout(()=>{
+        cleanPlayers();
+        setCoin();
+        io.emit('showVotes', false);
+        updateClientArray();        
+      }, 8000);
+    
+    };
 
     let missionVote = () => {
       //get the players that are selected
@@ -303,19 +332,6 @@ module.exports = function (app, express, server) {
           io.to(player.userID).emit('voteBoxes', true);
         }
       });
-      updateClientArray();
-    };
-
-
-    let groupVoteFailed = () => {
-      //we want to clean the players
-      cleanPlayers();
-      io.emit('setPicker', '');
-      io.emit('voteBoxes', false);
-      selectCounter = 0;
-      roundCounter = 0;
-      missionCounter = 0;
-      setCoin();
       updateClientArray();
     };
 

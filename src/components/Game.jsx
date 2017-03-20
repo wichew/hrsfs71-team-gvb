@@ -19,12 +19,14 @@ class Game extends React.Component {
       coinCounter: null,
       topMessage: ' ',
       midMessage: ' ',
-      roundVoteBtn: null
+      groupVotePassBtn: false,
+      groupVoteFailBtn: false,
+      showVotes: false
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests }); });
-    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
+    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });
@@ -32,7 +34,7 @@ class Game extends React.Component {
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
-    
+    socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); });
     
     
     this.roundVote = this.roundVote.bind(this);
@@ -90,15 +92,13 @@ class Game extends React.Component {
           <p>Hi, {this.state.username}!</p>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
           {this.state.resultsArray.map((player, i) => {
-            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
+            return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} showVote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
           })}
         </div>
       );
     } else {
       return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-
-          <p>Hi, {this.state.username}</p>
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             <button onClick={() => { console.log('starting game'); socket.emit('gameStart'); }}>start game</button>
@@ -126,15 +126,19 @@ class Game extends React.Component {
           </div>
 
           {this.state.voteBoxes ? <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignSelf: 'center', justifyContent: 'center' }}>
-            <div style={{ backgroundColor: this.state.roundVoteBtn ? '#8CE037' : 'white', border: ' 2px solid #8CE037', margin: 8, padding: 16, borderRadius: '3px', color: this.state.roundVoteBtn ? 'white' : '#8CE037', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); }}>PASS</div>
-            <div style={{ backgroundColor: this.state.roundVoteBtn ? 'white' : '#D0011B', border: ' 2px solid #D0011B', margin: 8, padding: 16, borderRadius: '3px', color: this.state.roundVoteBtn ? '#D0011B' : 'white', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); }}>FAIL</div>
+            <div style={{ backgroundColor: this.state.groupVotePassBtn ? '#8CE037' : 'white', border: ' 2px solid #8CE037', margin: 8, padding: 16, borderRadius: '3px', color: this.state.groupVotePassBtn ? 'white' : '#8CE037', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); this.setState({groupVoteFailBtn: false, groupVotePassBtn: true}); }}>PASS</div>
+            <div style={{ backgroundColor: this.state.groupVoteFailBtn ? '#D0011B' : 'white', border: ' 2px solid #D0011B', margin: 8, padding: 16, borderRadius: '3px', color: this.state.groupVoteFailBtn ? 'white' : '#D0011B', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); this.setState({groupVoteFailBtn: true, groupVotePassBtn: false}); }}>FAIL</div>
 
           </div>
             : <p></p>}
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
+<<<<<<< HEAD
               return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
+=======
+              return <Player selected={userInput.selected} isPicker={this.isPicker} showVotes={this.state.showVotes} roundVote={userInput.roundVote} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
+>>>>>>> 6c11753ab3ad2a352676af73672b4f1aa53dfc23
             }
             )}
 
