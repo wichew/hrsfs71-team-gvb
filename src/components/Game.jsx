@@ -134,11 +134,7 @@ class Game extends React.Component {
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
-<<<<<<< HEAD
               return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
-=======
-              return <Player selected={userInput.selected} isPicker={this.isPicker} showVotes={this.state.showVotes} roundVote={userInput.roundVote} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
->>>>>>> 6c11753ab3ad2a352676af73672b4f1aa53dfc23
             }
             )}
 
