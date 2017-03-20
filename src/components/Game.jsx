@@ -18,29 +18,16 @@ class Game extends React.Component {
       coinCounter: null,
       topMessage: ' ',
       midMessage: ' ',
-<<<<<<< HEAD
       groupVotePassBtn: false,
       groupVoteFailBtn: false,
       showVotes: false,
-      numberOfPlayers: null
-=======
-      roundVoteBtn: false,
-      showVotes: false
->>>>>>> Adding create game and multiple game size features
+      numberOfPlayers: null,
+      roundVoteBtn: false
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
     socket.on('setPicker', (pickerObj) => { this.setState({ picker: pickerObj.picker }); });
-<<<<<<< HEAD
     socket.on('updateQuest', (quests) => { this.setState({ questArray: quests[this.props.numberOfPlayers-5] }); console.log('updated questArray' + this.state.questArray) });
-<<<<<<< HEAD
     socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
-=======
-    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); console.log(this.state.confirmGroupBtn); });
-=======
-    socket.on('updateQuest', (quests) => { this.setState({ questArray: quests }); });
-    socket.on('confirmGroupBtn', (bool) => { this.setState({ confirmGroupBtn: bool }); });
->>>>>>> af94d4cb3685b46ecb27a6a752d190d887ce21e3
->>>>>>> Adding create game and multiple game size features
     socket.on('updateCoinCounter', (coin) => { this.setState({ coinCounter: coin }); console.log('coin state ', this.state.coinCounter); });
     socket.on('updateArray', (array) => { this.setState({ resultsArray: array }); console.log('Array Updated To:', this.state.resultsArray); });
     socket.on('voteBoxes', (bool) => { this.setState({ voteBoxes: bool }); console.log('voteBoxes for' + ' ' + this.state.playerID + ' ' + this.state.voteBoxes); });
