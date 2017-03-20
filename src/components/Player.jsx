@@ -6,6 +6,7 @@ class Player extends React.Component {
   }
 
   render() {
+    console.log('username: ', this.props.username);
     return (
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div style={{ display: 'flex', flexDirection: 'row', flex: 7, border: '2px solid grey', borderRadius: 6, padding: 6, margin: 6, backgroundColor: this.props.selected ? 'lightblue' : 'white' }}>
