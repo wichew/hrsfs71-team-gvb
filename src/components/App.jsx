@@ -83,16 +83,18 @@ class App extends React.Component {
             return this.state.user.loggedin ? <Redirect to='/home' /> : <Redirect to='/login' />;
           }}/>
           <Route path='/home' component={Home}/>
-          <Route path='/login' render={() => <Login login={this.login}/>} />
+          <Route path='/login' render={() => {
+            if(this.state.user.loggedin){
+              return <Redirect to = '/home'/>
+            }else {
+              return <Login login={this.login}/>}
+            }
+          } />
           <Route path='/signup' component={Signup}/>
           <Route path='/creategame' render={() => <CreateGame user={this.state.user} decrementNumberOfPlayers = {this.decrementNumberOfPlayers} incrementNumberOfPlayers = {this.incrementNumberOfPlayers}
           numberOfPlayers = {this.state.numberOfPlayers}/>} />
           <Route path='/game' render={() => {
-<<<<<<< HEAD
-            return (this.state.user.loggedin) ? <Game username={this.state.user.username} /> : <Redirect to='/login'/>;
-=======
             return (this.state.user.loggedin) ? <Game user={this.state.user.username} numberOfPlayers ={this.state.numberOfPlayers}/> : <Redirect to='/login'/>;
->>>>>>> Add more game arrays into gamelogic.js and implemented create game feature.
           }}/>
           <Route path='/game/vote' render={() => <Vote user={this.state.user.username}/>}/>          
         <Game username={this.state.user.username}/>
