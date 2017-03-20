@@ -19,7 +19,8 @@ class Game extends React.Component {
       coinCounter: null,
       topMessage: ' ',
       midMessage: ' ',
-      roundVoteBtn: false,
+      groupVotePassBtn: false,
+      groupVoteFailBtn: false,
       showVotes: false
     };
     socket.on('setPlayerID', (id) => { this.setState({ playerID: id }); socket.emit('updateUsername', ({username: this.props.username, playerID: this.state.playerID})); });  
@@ -124,8 +125,8 @@ class Game extends React.Component {
           </div>
 
           {this.state.voteBoxes ? <div style={{ flex: 1, display: 'flex', flexDirection: 'row', alignSelf: 'center', justifyContent: 'center' }}>
-            <div style={{ backgroundColor: this.state.roundVoteBtn ? '#8CE037' : 'white', border: ' 2px solid #8CE037', margin: 8, padding: 16, borderRadius: '3px', color: this.state.roundVoteBtn ? 'white' : '#8CE037', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); }}>PASS</div>
-            <div style={{ backgroundColor: this.state.roundVoteBtn ? 'white' : '#D0011B', border: ' 2px solid #D0011B', margin: 8, padding: 16, borderRadius: '3px', color: this.state.roundVoteBtn ? '#D0011B' : 'white', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); }}>FAIL</div>
+            <div style={{ backgroundColor: this.state.groupVotePassBtn ? '#8CE037' : 'white', border: ' 2px solid #8CE037', margin: 8, padding: 16, borderRadius: '3px', color: this.state.groupVotePassBtn ? 'white' : '#8CE037', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: true }); this.setState({groupVoteFailBtn: false, groupVotePassBtn: true}); }}>PASS</div>
+            <div style={{ backgroundColor: this.state.groupVoteFailBtn ? '#D0011B' : 'white', border: ' 2px solid #D0011B', margin: 8, padding: 16, borderRadius: '3px', color: this.state.groupVoteFailBtn ? 'white' : '#D0011B', fontSize: '18px' }} onClick={() => { this.roundVote({ user: this.state.playerID, vote: false }); this.setState({groupVoteFailBtn: true, groupVotePassBtn: false}); }}>FAIL</div>
 
           </div>
             : <p></p>}
