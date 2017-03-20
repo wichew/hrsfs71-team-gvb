@@ -13,7 +13,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       user: {
-        loggedin: false,
+        loggedin: true,
         username: 'Bob'
       }
     };
@@ -65,8 +65,8 @@ class App extends React.Component {
             return (this.state.user.loggedin) ? <Game user={this.state.user.username} /> : <Redirect to='/login'/>;
           }}/>
           <Route path='/game/vote' render={() => <Vote user={this.state.user.username}/>}/>
-          <p>{this.state.user.username}</p>
-        <Game username={this.state.user.username}/>
+          {/*<p>{this.state.user.username}</p>*/}
+        {/*<Game username={this.state.user.username}/>*/}
         </div>
         
       </Router>
