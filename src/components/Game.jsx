@@ -34,7 +34,7 @@ class Game extends React.Component {
     socket.on('topMessage', (message) => { this.setState({ topMessage: message }); });
     socket.on('midMessage', (message) => { this.setState({ midMessage: message }); });
     socket.on('resetroundVoteBtn', () => { this.setState({ roundVoteBtn: null }); });
-    socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); });
+    socket.on('showVotes', (bool) => { this.setState({showVotes: bool}); console.log('show votes', bool); });
     socket.on('groupVoteBtns', ()=>{ this.setState({groupVotePassBtn: false, groupVoteFailBtn: false}); });
     
     
@@ -135,7 +135,7 @@ class Game extends React.Component {
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
-              return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
+              return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={userInput.roundVote} showVotes={this.state.showVotes} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
             }
             )}
 
