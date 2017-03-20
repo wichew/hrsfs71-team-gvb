@@ -72,10 +72,11 @@ module.exports = function (app, express, server) {
         if (player.userID === userObj.playerID) {
           player.name = userObj.username;
         }
-      }
-      );
+      }      
+    );
+    updateClientArray();
       // console.log(userArray);
-    });
+  });
 
 
     //getPlayerAmount

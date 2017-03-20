@@ -89,6 +89,7 @@ class Game extends React.Component {
       // render waiting area (aka game lobby)
       return (
         <div className='playerList'>
+          <p>Hi, {this.state.username}!</p>
           <div className='waitMsg'>Waiting for all players to join . . .</div>
           {this.state.resultsArray.map((player, i) => {
             return <Player selected={player.selected} isPicker={this.isPicker} roundVote={this.roundVote} showVote={player.vote} handleCheck={this.handleCheck} key={player.key} userID={player.userID} pickerID={this.state.picker} />;
@@ -133,7 +134,7 @@ class Game extends React.Component {
 
           <div style={{ flex: 1, alignSelf: 'center' }}>
             {this.state.resultsArray.map((userInput) => {
-              return <Player selected={userInput.selected} isPicker={this.isPicker} showVotes={this.state.showVotes} roundVote={userInput.roundVote} key={userInput.key} userID={userInput.userID} pickerID={this.state.picker} />;
+              return <Player selected={userInput.selected} isPicker={this.isPicker} roundVote={this.roundVote} vote={userInput.vote} handleCheck={this.handleCheck} key={userInput.key} username={userInput.name} userID={userInput.userID} pickerID={this.state.picker} />;
             }
             )}
 
